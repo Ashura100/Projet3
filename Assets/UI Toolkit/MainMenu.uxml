@@ -1,2 +1,30 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Sprite/Hangaman%20background.png?fileID=21300000&amp;guid=46390bde2a3c701469dd48f065720b67&amp;type=3#Hangaman background&quot;);">
+        <ui:Button text="A" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 80%;" />
+        <ui:Button text="B" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 77%;" />
+        <ui:Button text="C" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 74%;" />
+        <ui:Button text="D" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 71%;" />
+        <ui:Button text="E" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 68%;" />
+        <ui:Button text="F" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 65%;" />
+        <ui:Button text="G" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 62%;" />
+        <ui:Button text="H" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 59%;" />
+        <ui:Button text="I" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 56%;" />
+        <ui:Button text="J" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 53%;" />
+        <ui:Button text="K" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 50%;" />
+        <ui:Button text="L" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 47%;" />
+        <ui:Button text="M" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 44%;" />
+        <ui:Button text="N" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 41%;" />
+        <ui:Button text="O" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 38%;" />
+        <ui:Button text="P" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 35%;" />
+        <ui:Button text="Q" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 32%;" />
+        <ui:Button text="R" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 29%;" />
+        <ui:Button text="S" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 26%;" />
+        <ui:Button text="T" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 23%;" />
+        <ui:Button text="U" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 80%; align-self: flex-start; right: 20%;" />
+        <ui:Button text="V" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 85%; align-self: flex-start; right: 56%;" />
+        <ui:Button text="W" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 85%; align-self: flex-start; right: 53%;" />
+        <ui:Button text="X" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 85%; align-self: flex-start; right: 50%;" />
+        <ui:Button text="Y" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 85%; align-self: flex-start; right: 47%;" />
+        <ui:Button text="Z" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AlphaButton" style="position: absolute; top: 85%; align-self: flex-start; right: 44%;" />
+    </ui:VisualElement>
 </ui:UXML>
