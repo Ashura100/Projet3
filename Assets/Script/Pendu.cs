@@ -19,17 +19,16 @@ public class Pendu : MonoBehaviour
     VisualElement root;
     Label wordLabel;
     TextField indiceText;
-    TextField infoamtion;
+    TextField information;
     Button turnBack;
 
-    public string word;
+    public string targetWord = "HELLO";
+    private string guessedWord;
     public const string CATEGORIE = "https://trouve-mot.fr/api/categorie";
-    public List<char> playLetterList = new List<char>();
 
-    public bool IsWon = false;
-    public int score = 0;
-    int counter = 0;
-    int lifeMax = 10;
+    public bool IsWon;
+    public int score;
+    public int lifeMax;
 
     public Pendu(GameManager gameManager)
     {
@@ -42,7 +41,7 @@ public class Pendu : MonoBehaviour
 
         wordLabel = root.Q<Label>("Word");
         indiceText = root.Q<TextField>("Indice");
-        infoamtion = root.Q<TextField>("Information");
+        information = root.Q<TextField>("Information");
         turnBack = root.Q<Button>("Return");
 
         List<Button> bonusButtons = root.Query<Button>("BonusButton").ToList();
@@ -53,10 +52,17 @@ public class Pendu : MonoBehaviour
         List<Button> alphaButton = root.Query<Button>("AlphaButton").ToList();
         foreach (Button button in alphaButton)
         {
-            button.clickable.clickedWithEventInfo += OnLetterTouch;
+            string letter = button.text;
+            button.clicked += () => OnLetterTouch(letter);
         }
 
         turnBack.clickable.clicked += OnReturnTouch;
+
+        guessedWord = new string('-', targetWord.Length);
+        UpdateWordLabel();
+
+        lifeMax = targetWord.Length; // Nombre de vies basé sur la longueur du mot
+        score = 0; // Initialiser le score à 0
     }
     // Start is called before the first frame update
     void Start()
@@ -76,11 +82,77 @@ public class Pendu : MonoBehaviour
         Debug.Log("click" + button.text);
     }
 
-    void OnLetterTouch(EventBase evt)
+    void OnLetterTouch(string chosenLetter)
     {
-        Button button = (Button)evt.target;
-        wordLabel.text = button.text;
-        CheckFindWord();
+        // Convertir la lettre choisie en majuscule pour la comparer avec targetWord
+        chosenLetter = chosenLetter.ToUpper();
+
+        if (IsCorrectLetter(chosenLetter))
+        {
+            information.value = $"Correct letter: {chosenLetter}";
+
+            // Mettre à jour guessedWord avec la lettre correcte
+            char[] guessedWordArray = guessedWord.ToCharArray();
+
+            // Vérifier si au moins une lettre a été trouvée
+            bool letterGuessed = false;
+
+            // Assurer que guessedWordArray a une taille correspondant à targetWord
+            if (guessedWordArray.Length != targetWord.Length)
+            {
+                guessedWordArray = new char[targetWord.Length]; // Initialiser avec la taille correcte
+                for (int i = 0; i < guessedWordArray.Length; i++)
+                {
+                    guessedWordArray[i] = '_'; // Initialiser avec des caractères par défaut (par exemple '_')
+                }
+            }
+
+            for (int i = 0; i < targetWord.Length; i++)
+            {
+                if (char.ToUpper(targetWord[i]) == chosenLetter[0])
+                {
+                    // Vérifier que l'indice i est dans les limites de guessedWordArray
+                    if (i < guessedWordArray.Length)
+                    {
+                        guessedWordArray[i] = chosenLetter[0];
+                        letterGuessed = true;
+                        score++;
+                    }
+                    else
+                    {
+                        Debug.LogError($"Index {i} is out of bounds for guessedWordArray of length {guessedWordArray.Length}");
+                    }
+                }
+            }
+
+            // Mettre à jour guessedWord uniquement si une lettre a été trouvée
+            if (letterGuessed)
+            {
+                guessedWord = new string(guessedWordArray);
+                UpdateWordLabel();
+
+                // Vérifier si le mot a été deviné
+                if (guessedWord.Equals(targetWord))
+                {
+                    information.value = "Félicitations ! Vous avez deviné le mot !";
+                    IsWon = true;
+                    // Ajoutez ici votre logique pour la victoire
+                }
+            }
+        }
+        else
+        {
+            information.value = $"Incorrect letter: {chosenLetter}";
+            lifeMax--;
+
+            if (lifeMax <= 0)
+            {
+                information.value = "Game Over ! Vous avez perdu.";
+                IsWon = false;
+            }
+            // Traitez le cas où la lettre choisie est incorrecte
+            // Ajoutez ici votre logique pour les lettres incorrectes
+        }
     }
 
     void OnReturnTouch()
@@ -94,32 +166,15 @@ public class Pendu : MonoBehaviour
 
     }
 
-    public void CheckUserLetter(Button buttonText)
+    void UpdateWordLabel()
     {
-        if (!IsInputValid(buttonText))
-        {
-            return;
-        }
-
-        infoamtion.value = $"il vous reste {lifeMax - counter} essaies";
-        infoamtion.value = "veuillez saisir une lettre";
-        infoamtion.value = $"veuillez saisir une lettre, il vous reste {lifeMax - counter} essaies";
-        //buttonText = OnLetterTouch();
-        char letter = buttonText.text[0];
+        // Met à jour le label avec le mot deviné jusqu'à présent
+        wordLabel.text = guessedWord;
     }
 
-    public void CheckFindWord()
+    bool IsCorrectLetter(string letter)
     {
-
-    }
-
-    bool IsInputValid(Button button)
-    {
-        if (//OnLetterTouch() || !Char.IsLetter(button.text[0]))
-        {
-            wordLabel.text = "veuillez saisir une lettre";
-            return false;
-        }
-        return true;
+        // Vérifie si la lettre choisie est présente dans le mot cible
+        return targetWord.Contains(letter);
     }
 }

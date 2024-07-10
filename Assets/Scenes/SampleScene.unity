@@ -404,6 +404,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1594965705}
   uIDocument: {fileID: 778664677}
+  audioMixer: {fileID: 24100000, guid: d2f19580d53c1514ea50ab85d223d15a, type: 2}
 --- !u!1 &813969356
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,7 +422,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &813969357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -467,10 +468,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1594965705}
   uIDocument: {fileID: 813969357}
-  word: 
-  playLetterList: 
+  targetWord: BAGARRE
   IsWon: 0
   score: 0
+  lifeMax: 0
 --- !u!1 &1146166569
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,7 +583,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1691664500
 MonoBehaviour:
   m_ObjectHideFlags: 0
