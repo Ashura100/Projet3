@@ -20,7 +20,9 @@ public class Pendu : MonoBehaviour
     Label wordLabel;
     TextField indiceText;
     TextField information;
-    Button turnBack;
+    Button goBack;
+    Button bonusRemoveWrongLetter;
+    Button bonusShowCorrectLetter;
 
     public string targetWord = "HELLO";
     private string guessedWord;
@@ -42,13 +44,11 @@ public class Pendu : MonoBehaviour
         wordLabel = root.Q<Label>("Word");
         indiceText = root.Q<TextField>("Indice");
         information = root.Q<TextField>("Information");
-        turnBack = root.Q<Button>("Return");
+        goBack = root.Q<Button>("Return");
 
-        List<Button> bonusButtons = root.Query<Button>("BonusButton").ToList();
-        foreach (Button button in bonusButtons)
-        {
-            button.clickable.clickedWithEventInfo += OnGameButtonTouch;
-        }
+        bonusRemoveWrongLetter = root.Q<Button>("CancelLetter");
+        bonusShowCorrectLetter = root.Q<Button>("AddLetter");
+
         List<Button> alphaButton = root.Query<Button>("AlphaButton").ToList();
         foreach (Button button in alphaButton)
         {
@@ -56,7 +56,10 @@ public class Pendu : MonoBehaviour
             button.clicked += () => OnLetterTouch(letter);
         }
 
-        turnBack.clickable.clicked += OnReturnTouch;
+        bonusRemoveWrongLetter.clicked += RemoveWrongLetter;
+        bonusShowCorrectLetter.clicked += ShowCorrectLetter;
+
+        goBack.clickable.clicked += GoBack;
 
         guessedWord = new string('-', targetWord.Length);
         UpdateWordLabel();
@@ -74,12 +77,6 @@ public class Pendu : MonoBehaviour
     void Update()
     {
         
-    }
-
-    void OnGameButtonTouch(EventBase eventBase)
-    {
-        Button button = (Button)eventBase.target;
-        Debug.Log("click" + button.text);
     }
 
     void OnLetterTouch(string chosenLetter)
@@ -135,6 +132,7 @@ public class Pendu : MonoBehaviour
                 if (guessedWord.Equals(targetWord))
                 {
                     information.value = "Félicitations ! Vous avez deviné le mot !";
+                    gameManager.Ui.OnWin();
                     IsWon = true;
                     // Ajoutez ici votre logique pour la victoire
                 }
@@ -148,6 +146,7 @@ public class Pendu : MonoBehaviour
             if (lifeMax <= 0)
             {
                 information.value = "Game Over ! Vous avez perdu.";
+                gameManager.Ui.OnLose();
                 IsWon = false;
             }
             // Traitez le cas où la lettre choisie est incorrecte
@@ -155,13 +154,47 @@ public class Pendu : MonoBehaviour
         }
     }
 
-    void OnReturnTouch()
+    void RemoveWrongLetter()
     {
-        gameManager.Ui.isPlaying = false;
-        gameManager.Ui.ChangeScreen();
+        char[] guessedWordArray = guessedWord.ToCharArray();
+        for (int i = 0; i < guessedWordArray.Length; i++)
+        {
+            if (guessedWordArray[i] == '-')
+            {
+                // Trouver le bouton correspondant à cette lettre
+                List<Button> alphaButtons = root.Query<Button>("AlphaButton").ToList();
+                foreach (Button button in alphaButtons)
+                {
+                    if (button.text == targetWord[i].ToString())
+                    {
+                        // Changer la couleur du texte du bouton pour indiquer qu'il contient la bonne lettre
+                        button.style.color = Color.green;
+                    }
+                }
+
+                // Remplacer la lettre incorrecte par la lettre correcte dans guessedWord
+                guessedWordArray[i] = targetWord[i];
+                guessedWord = new string(guessedWordArray);
+                break;
+            }
+        }
     }
 
-    public void CheckCategorie()
+    void ShowCorrectLetter()
+    {
+        // Find a correct letter in targetWord that hasn't been guessed yet and reveal it
+        for (int i = 0; i < targetWord.Length; i++)
+        {
+            if (guessedWord[i] == '-')
+            {
+                guessedWord = guessedWord.Substring(0, i) + targetWord[i] + guessedWord.Substring(i + 1);
+                UpdateWordLabel();
+                break;
+            }
+        }
+    }
+
+    void CheckCategorie()
     {
 
     }
@@ -170,6 +203,18 @@ public class Pendu : MonoBehaviour
     {
         // Met à jour le label avec le mot deviné jusqu'à présent
         wordLabel.text = guessedWord;
+    }
+
+    void GoBack()
+    {
+        if (gameManager.Ui != null)
+        {
+            gameManager.Ui.GoBackToMenu();
+        }
+        else
+        {
+            Debug.LogError("UiManager not found!");
+        }
     }
 
     bool IsCorrectLetter(string letter)

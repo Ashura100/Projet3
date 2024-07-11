@@ -21,6 +21,7 @@ public class Settings : MonoBehaviour
     UIDocument uIDocument;
     VisualElement root;
 
+    Button goBack;
     Slider slider;
     Toggle toggle;
 
@@ -49,6 +50,7 @@ public class Settings : MonoBehaviour
         root = GetComponent<UIDocument>().rootVisualElement;
         slider = root.Q<Slider>("Slider");
         toggle = root.Q<Toggle>("FullScreenT");
+        goBack = root.Q<Button>("Return");
 
         resolutionButtons = root.Query<Button>("ButtonRes").ToList();
         for (int i = 0; i < resolutionButtons.Count; i++)
@@ -63,6 +65,8 @@ public class Settings : MonoBehaviour
             int index = i;
             difficultyButtons[i].clicked += () => SetDifficulty(difficulties[index]);
         }
+
+        goBack.clickable.clicked += GoBack;
 
         slider.RegisterValueChangedCallback(evt => SetVolume(evt.newValue));
 
@@ -111,9 +115,16 @@ public class Settings : MonoBehaviour
         currentDifficulty = newDifficulty;
         Debug.Log($"Difficulty changed to: {newDifficulty}");
     }
-    void OnReturnTouch()
+
+    void GoBack()
     {
-        gameManager.Ui.isSettings = false;
-        gameManager.Ui.ChangeScreen();
+        if (gameManager.Ui != null)
+        {
+            gameManager.Ui.GoBackToMenu();
+        }
+        else
+        {
+            Debug.LogError("UiManager not found!");
+        }
     }
 }

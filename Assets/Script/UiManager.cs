@@ -7,11 +7,11 @@ using UnityEngine.UIElements;
 
 public class UiManager : MonoBehaviour
 {
-    private static UiManager instance;
+    Pendu pendu;
     [SerializeField]
     UIDocument uIDocument;
     [SerializeField]
-    GameObject starttUi;
+    GameObject startUi;
     [SerializeField]
     GameObject gameUi;
     [SerializeField]
@@ -20,6 +20,10 @@ public class UiManager : MonoBehaviour
     GameObject categoryUi;
     [SerializeField]
     GameObject classUi;
+    [SerializeField]
+    GameObject winUi;
+    [SerializeField]
+    GameObject loseUi;
 
     VisualElement root;
     VisualElement startMenu;
@@ -28,15 +32,11 @@ public class UiManager : MonoBehaviour
     Button category;
     Button classement;
 
-    public bool isPlaying;
-    public bool isSettings;
-    public bool isCategory;
-    public bool isClass;
-
     // Start is called before the first frame update
     void Awake()
     {
-        root = GetComponent<UIDocument>().rootVisualElement;
+        pendu = GetComponent<Pendu>();
+        root = uIDocument.rootVisualElement;
 
         startMenu = root.Q<VisualElement>("StartMenu");
         screen = root.Q<Button>("TouchToPlay");
@@ -44,102 +44,70 @@ public class UiManager : MonoBehaviour
         category = root.Q<Button>("Category");
         classement = root.Q<Button>("Classement");
 
-        screen.clickable.clicked += OnScreenTouch;
-        settings.clickable.clicked += OnSettingsTouch;
-        category.clickable.clicked += OnCategoryTouch;
-        classement.clickable.clicked += OnClassementTouch;
-    }
-
-    void OnScreenTouch()
-    {
-        ChangeScreen();
-        isPlaying = true;
-    }
-
-    void OnSettingsTouch()
-    {
-        ChangeScreen();
-        isSettings = true;
-    }
-
-    void OnCategoryTouch()
-    {
-        ChangeScreen();
-        isCategory = true;
-    }
-
-    void OnClassementTouch()
-    {
-        ChangeScreen();
-        isClass = true;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    void ChangeSprite()
-    {
-
-    }
-
-    public void ChangeScreen()
-    {
-        if (isPlaying == true)
+        List<Button> buttons = new List<Button> { screen, settings, category, classement };
+        foreach (var button in buttons)
         {
-            starttUi.SetActive(false);
-            gameUi.SetActive(true);
+            button.clickable.clicked += () => OnButtonTouch(button);
         }
-        else
-        {
-            starttUi.SetActive(true);
-            gameUi.SetActive(false);
-        }
-
-        /*if (isSettings == true)
-        {
-            starttUi.SetActive(false);
-            settingsUi.SetActive(true);
-        }
-        else
-        {
-            starttUi.SetActive(true);
-            settingsUi.SetActive(false);
-        }
-
-        if (isCategory == true)
-        {
-            starttUi.SetActive(false);
-            categoryUi.SetActive(true);
-        }
-        else
-        {
-            starttUi.SetActive(true);
-            categoryUi.SetActive(false);
-        }
-
-        if (isClass == true)
-        {
-            starttUi.SetActive(false);
-            classUi.SetActive(true);
-        }
-        else
-        {
-            starttUi.SetActive(true);
-            classUi.SetActive(false);
-        }*/
     }
 
-    void OnWin()
+    void OnButtonTouch(Button button)
     {
-
+        switch (button.name)
+        {
+            case "TouchToPlay":
+                ChangeScreen(startUi, gameUi);
+                break;
+            case "Settings":
+                ChangeScreen(startUi, settingsUi);
+                break;
+            case "Category":
+                ChangeScreen(startUi, categoryUi);
+                break;
+            case "Classement":
+                ChangeScreen(startUi, classUi);
+                break;
+        }
     }
 
-    void OnLose()
+    public void ChangeScreen(GameObject fromScreen, GameObject toScreen)
     {
-
+        // Use DoTween for a slide transition
+        fromScreen.transform.DOMoveX(-Screen.width, 0.5f).OnComplete(() => fromScreen.SetActive(false));
+        toScreen.transform.position = new Vector3(Screen.width, toScreen.transform.position.y, toScreen.transform.position.z);
+        toScreen.SetActive(true);
+        toScreen.transform.DOMoveX(0, 0.5f);
     }
 
+    public void GoBackToMenu()
+    {
+        // Determine which screen is currently active and switch to startUi
+        if (gameUi.activeSelf)
+        {
+            ChangeScreen(gameUi, startUi);
+        }
+        else if (settingsUi.activeSelf)
+        {
+            ChangeScreen(settingsUi, startUi);
+        }
+        else if (categoryUi.activeSelf)
+        {
+            ChangeScreen(categoryUi, startUi);
+        }
+        else if (classUi.activeSelf)
+        {
+            ChangeScreen(classUi, startUi);
+        }
+    }
+
+
+    public void OnWin()
+    {
+        ChangeScreen(gameUi, winUi);
+    }
+
+    public void OnLose()
+    {
+        ChangeScreen(gameUi, loseUi);
+    }
 }

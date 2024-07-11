@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Sprite/Hangaman%20background.png?fileID=21300000&amp;guid=46390bde2a3c701469dd48f065720b67&amp;type=3#Hangaman background&quot;);">
-        <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" style="max-width: 2556px; max-height: 1179px; min-width: 100px; min-height: 100px; width: 10%; height: 5%; position: absolute; align-self: flex-start; top: 80%; left: 5%;" />
+        <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Return" style="max-width: 2556px; max-height: 1179px; min-width: 100px; min-height: 100px; width: 10%; height: 5%; position: absolute; align-self: flex-start; top: 80%; left: 5%;" />
     </ui:VisualElement>
 </ui:UXML>

@@ -4,3 +4,7 @@
     color: rgb(255, 255, 255);
     -unity-text-align: middle-center;
 }
+
+#AlphaButton{
+    font-size: 25px;
+}
