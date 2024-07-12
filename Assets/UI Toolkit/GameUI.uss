@@ -5,6 +5,14 @@
     -unity-text-align: middle-center;
 }
 
+#Indice > .unity-base-text-field__input {
+    background-color: rgba(0, 0, 0, 0);
+    font-size: 35px;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+
+}
+
 #AlphaButton{
     font-size: 25px;
 }
