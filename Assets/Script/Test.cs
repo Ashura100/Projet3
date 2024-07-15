@@ -4,6 +4,7 @@ using UnityEngine.Networking;
 using UnityEngine;
 using System;
 using UnityEngine.UIElements;
+using Newtonsoft.Json.Linq;
 
 public class test : MonoBehaviour
 {
@@ -19,10 +20,9 @@ public class test : MonoBehaviour
     Button bonusRemoveWrongLetter;
     Button bonusShowCorrectLetter;
 
-    public string targetWord = "HELLO";
+    public string targetWord;
     private string guessedWord;
-    public const string CATEGORIE = "https://trouve-mot.fr/api/categorie";
-    public const string DICTIONARY_API_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/";
+    public const string CATEGORIE = "https://trouve-mot.fr/api/categorie/";
 
     public bool IsWon;
     public int score;
@@ -58,7 +58,12 @@ public class test : MonoBehaviour
         score = 0; // Initialiser le score à 0
 
         // Rechercher la définition du mot cible à l'aide de l'API de dictionnaire
-        StartCoroutine(GetWordDefinition(targetWord));
+        StartCoroutine(GetWordDefinition());
+    }
+
+    public test(GameManager gameManager)
+    {
+        this.gameManager = gameManager;
     }
 
     void Start()
@@ -156,10 +161,9 @@ public class test : MonoBehaviour
         }
     }
 
-    IEnumerator GetWordDefinition(string word)
+    IEnumerator GetWordDefinition()
     {
-        string formattedWord = word.ToLower(); // Formater le mot en minuscules pour l'API
-        string requestUrl = DICTIONARY_API_URL + formattedWord;
+        string requestUrl = CATEGORIE + "10";
 
         Debug.Log("Sending request to: " + requestUrl);
 
@@ -185,8 +189,11 @@ public class test : MonoBehaviour
             {
                 Debug.Log("Response: " + request.downloadHandler.text);
                 var response = request.downloadHandler.text;
-                var definition = ParseDefinition(response);
-                indiceText.value = definition;
+                targetWord = ParseWord(response);
+
+                // Initialiser guessedWord après avoir défini targetWord
+                guessedWord = new string('_', targetWord.Length);
+                UpdateWordLabel();
             }
             else
             {
@@ -196,22 +203,16 @@ public class test : MonoBehaviour
         }
     }
 
-    string ParseDefinition(string json)
+    string ParseWord(string json)
     {
-        Debug.Log("Parsing response: " + json);
-
-        // Parsing simple, basé sur la structure JSON de l'API de dictionnaire
-        var jsonResponse = JsonUtility.FromJson<DictionaryApiResponse[]>(json);
-        if (jsonResponse != null && jsonResponse.Length > 0)
+        JArray jArray = JArray.Parse(json);
+        foreach (JObject item in jArray)
         {
-            var meanings = jsonResponse[0].meanings;
-            if (meanings != null && meanings.Length > 0)
-            {
-                return meanings[0].definitions[0].definition;
-            }
+            return item.GetValue("name").ToString().ToUpper();
         }
-        return "Définition non trouvée.";
+        return null;
     }
+
 
     [System.Serializable]
     public class DictionaryApiResponse
@@ -229,6 +230,19 @@ public class test : MonoBehaviour
     public class Definition
     {
         public string definition;
+    }
+
+    [System.Serializable]
+    public class CategoryWord
+    {
+        public string categorie;
+        public string name;
+    }
+
+    [System.Serializable]
+    public class CategoryResponse
+    {
+        public CategoryWord[] words; 
     }
 
     void UpdateWordLabel()

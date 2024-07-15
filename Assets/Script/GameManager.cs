@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PlayFab;
 
 public class GameManager : MonoBehaviour
 {
-    public Pendu currentGame;
+    public test currentGame;
     public UiManager Ui;
     void Start()
     {
-        currentGame = new Pendu(this);
+        currentGame = new test(this);
     }
     public void Restart()
     {
-        currentGame = new Pendu(this);
+        currentGame = new test(this);
     }
 
     public void Paused()
