@@ -30,9 +30,21 @@ public class Test : MonoBehaviour
     public int score;
     public int lifeMax;
 
-    public Test(GameManager gameManager)
+    public static String RemoveDiacritics(this String s)
     {
-        this.gameManager = gameManager;
+        String normalizedString = s.Normalize(NormalizationForm.FormD);
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i = 0; i < normalizedString.Length; i++)
+        {
+            Char c = normalizedString[i];
+            if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+            {
+                stringBuilder.Append(c);
+            }
+        }
+
+        return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
     }
 
     void Awake()
@@ -66,6 +78,11 @@ public class Test : MonoBehaviour
 
         // Rechercher la définition du mot cible à l'aide de l'API de dictionnaire
         StartCoroutine(GetWordDefinition());
+    }
+
+    public Test(GameManager gameManager)
+    {
+        this.gameManager = gameManager;
     }
 
     void Start()
@@ -165,7 +182,7 @@ public class Test : MonoBehaviour
 
     IEnumerator GetWordDefinition()
     {
-        string requestUrl = CATEGORIE + GameManager.Instance.CurrentCategory;
+        string requestUrl = CATEGORIE + "10";
 
         Debug.Log("Sending request to: " + requestUrl);
 

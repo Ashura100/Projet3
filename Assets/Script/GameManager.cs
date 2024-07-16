@@ -5,15 +5,46 @@ using PlayFab;
 
 public class GameManager : MonoBehaviour
 {
-    public test currentGame;
+    // Instance statique du GameManager
+    private static GameManager instance;
+
+    // Propriété statique pour accéder à l'instance unique
+    public static GameManager Instance
+    {
+        get
+        {
+            // Retourne l'instance existante s'il y en a une, sinon en crée une nouvelle
+            if (instance == null)
+            {
+                instance = FindObjectOfType<GameManager>(); // Recherche GameManager dans la scène
+                if (instance == null)
+                {
+                    GameObject obj = new GameObject("GameManager");
+                    instance = obj.AddComponent<GameManager>();
+                }
+            }
+            return instance;
+        }
+    }
+
+    // Autres membres de la classe GameManager
+    public Test currentGame;
     public UiManager Ui;
+    public string currentCategory = "10"; // Devient privée
+
+    // Propriété publique pour accéder à currentCategory
+    public string CurrentCategory
+    {
+        get { return currentCategory; }
+        set { currentCategory = value; }
+    }
     void Start()
     {
-        currentGame = new test(this);
+        currentGame = new Test(this);
     }
     public void Restart()
     {
-        currentGame = new test(this);
+        currentGame = new Test(this);
     }
 
     public void Paused()

@@ -351,6 +351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 647808528}
   - component: {fileID: 647808527}
+  - component: {fileID: 647808529}
   m_Layer: 5
   m_Name: WinUi
   m_TagString: Untagged
@@ -389,6 +390,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &647808529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647808526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc501fe9dcf1aeb439526ac529e5abc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 1594965705}
+  uIDocument: {fileID: 647808527}
 --- !u!1 &778664676
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,8 +612,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1588a1c12dd32cd458dcbd1c6c73dba5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentGame: {fileID: 0}
+  currentGame: {fileID: 813969359}
   Ui: {fileID: 1691664500}
+  currentCategory: 10
 --- !u!4 &1594965706
 Transform:
   m_ObjectHideFlags: 0
@@ -693,6 +709,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1790360681}
   - component: {fileID: 1790360680}
+  - component: {fileID: 1790360682}
   m_Layer: 5
   m_Name: CategoryUi
   m_TagString: Untagged
@@ -731,6 +748,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1790360682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1790360679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d414a17b43ea040b35eb9711c15ff3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 1594965705}
+  uIDocument: {fileID: 1790360680}
 --- !u!1 &2040165402
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,6 +772,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2040165404}
   - component: {fileID: 2040165403}
+  - component: {fileID: 2040165405}
   m_Layer: 5
   m_Name: LoseUi
   m_TagString: Untagged
@@ -779,6 +811,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2040165405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2040165402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26ec4146fb4e99c4abf2d38cc41a1e6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 1594965705}
+  uIDocument: {fileID: 2040165403}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

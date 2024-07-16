@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -31,6 +32,12 @@ public class UiManager : MonoBehaviour
     Button settings;
     Button category;
     Button classement;
+    private GameManager gameManager;
+
+    public UiManager(GameManager gameManager)
+    {
+        this.gameManager = gameManager;
+    }
 
     // Start is called before the first frame update
     void Awake()
@@ -97,6 +104,14 @@ public class UiManager : MonoBehaviour
         else if (classUi.activeSelf)
         {
             ChangeScreen(classUi, startUi);
+        }
+        else if (winUi.activeSelf)
+        {
+            ChangeScreen(winUi, gameUi);
+        }
+        else if (loseUi.activeSelf)
+        {
+            ChangeScreen(loseUi, startUi);
         }
     }
 
