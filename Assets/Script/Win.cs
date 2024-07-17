@@ -25,6 +25,7 @@ public class Win : MonoBehaviour
 
     private void ContinueToPlay()
     {
-        gameManager.Ui.GoBackToMenu();
+        UiManager.Instance.GoBackToMenu();
+        gameManager.Restart();
     }
 }

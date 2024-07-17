@@ -7,21 +7,22 @@ using UnityEngine.UIElements;
 using Newtonsoft.Json.Linq;
 using System.Globalization;
 using System.Text;
+using System.Linq;
 
 public class Test : MonoBehaviour
 {
-    [SerializeField]
-    GameManager gameManager;
-    [SerializeField]
-    UIDocument uIDocument;
-    VisualElement root;
-    Label wordLabel;
-    TextField indiceText;
-    TextField information;
-    Button goBack;
-    Button bonusRemoveWrongLetter;
-    Button bonusShowCorrectLetter;
+    [SerializeField] private GameManager gameManager;
+    [SerializeField] private UIDocument uIDocument;
 
+    private VisualElement root;
+    private Label wordLabel;
+    private TextField indiceText;
+    private TextField information;
+    private Button goBack;
+    private Button bonusRemoveWrongLetter;
+    private Button bonusShowCorrectLetter;
+
+    private List<string> chosenLetters;
     public string targetWord;
     private string guessedWord;
     public const string CATEGORIE = "https://trouve-mot.fr/api/categorie/";
@@ -30,12 +31,12 @@ public class Test : MonoBehaviour
     public int score;
     public int lifeMax;
 
-    public Test(GameManager gameManager)
+    private void OnEnable()
     {
-        this.gameManager = gameManager;
+        Reset();
     }
 
-    void Awake()
+    public void Reset()
     {
         root = uIDocument.rootVisualElement;
 
@@ -43,57 +44,64 @@ public class Test : MonoBehaviour
         indiceText = root.Q<TextField>("Indice");
         information = root.Q<TextField>("Information");
         goBack = root.Q<Button>("Return");
-
         bonusRemoveWrongLetter = root.Q<Button>("CancelLetter");
         bonusShowCorrectLetter = root.Q<Button>("AddLetter");
 
-        List<Button> alphaButton = root.Query<Button>("AlphaButton").ToList();
-        foreach (Button button in alphaButton)
-        {
-            string letter = button.text;
-            button.clicked += () => OnLetterTouch(letter);
-        }
+        chosenLetters = new List<string>();
 
         bonusRemoveWrongLetter.clicked += RemoveWrongLetter;
         bonusShowCorrectLetter.clicked += ShowCorrectLetter;
         goBack.clicked += GoBack;
 
+        var alphaButtons = root.Query<Button>("AlphaButton").ToList();
+        foreach (var button in alphaButtons)
+        {
+            var letter = button.text;
+            button.clicked += () => OnLetterTouch(letter);
+        }
+
         guessedWord = new string('_', targetWord.Length);
         UpdateWordLabel();
 
-        lifeMax = 6; // Nombre de vies basé sur un nombre fixe pour les jeux de pendu
+        lifeMax = 11; // Nombre de vies basé sur un nombre fixe pour les jeux de pendu
         score = 0; // Initialiser le score à 0
 
         // Rechercher la définition du mot cible à l'aide de l'API de dictionnaire
         StartCoroutine(GetWordDefinition());
     }
 
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
-    }
-
-    void OnLetterTouch(string chosenLetter)
+    private void OnLetterTouch(string chosenLetter)
     {
         chosenLetter = chosenLetter.ToUpper();
+
+        if (chosenLetters.Contains(chosenLetter))
+        {
+            information.value = $"Vous avez déjà choisi la lettre: {chosenLetter}";
+            return;
+        }
+
+        chosenLetters.Add(chosenLetter);
+
+        foreach (var button in root.Query<Button>("AlphaButton").ToList())
+        {
+            if (button.text == chosenLetter)
+            {
+                button.SetEnabled(false);
+                break;
+            }
+        }
 
         if (IsCorrectLetter(chosenLetter))
         {
             information.value = $"Correct letter: {chosenLetter}";
-
-            char[] guessedWordArray = guessedWord.ToCharArray();
             bool letterGuessed = false;
 
+            var guessedWordArray = guessedWord.ToCharArray();
             for (int i = 0; i < targetWord.Length; i++)
             {
-                if (char.ToUpper(targetWord[i]) == chosenLetter[0])
+                if (RemoveAccents(targetWord[i].ToString().ToUpper()) == chosenLetter)
                 {
-                    guessedWordArray[i] = chosenLetter[0];
+                    guessedWordArray[i] = targetWord[i];
                     letterGuessed = true;
                     score++;
                 }
@@ -107,7 +115,7 @@ public class Test : MonoBehaviour
                 if (guessedWord.Equals(targetWord))
                 {
                     information.value = "Félicitations ! Vous avez deviné le mot !";
-                    gameManager.Ui.OnWin();
+                    UiManager.Instance.OnWin();
                     IsWon = true;
                 }
             }
@@ -120,37 +128,36 @@ public class Test : MonoBehaviour
             if (lifeMax <= 0)
             {
                 information.value = "Game Over ! Vous avez perdu.";
-                gameManager.Ui.OnLose();
+                UiManager.Instance.OnLose();
                 IsWon = false;
             }
         }
     }
 
-    void RemoveWrongLetter()
+    private void RemoveWrongLetter()
     {
-        char[] guessedWordArray = guessedWord.ToCharArray();
-        for (int i = 0; i < guessedWordArray.Length; i++)
-        {
-            if (guessedWordArray[i] == '_')
-            {
-                List<Button> alphaButtons = root.Query<Button>("AlphaButton").ToList();
-                foreach (Button button in alphaButtons)
-                {
-                    if (button.text == targetWord[i].ToString())
-                    {
-                        button.style.color = Color.green;
-                    }
-                }
+        var wrongLetterButtons = new List<Button>();
 
-                guessedWordArray[i] = targetWord[i];
-                guessedWord = new string(guessedWordArray);
-                UpdateWordLabel();
-                break;
+        foreach (var button in root.Query<Button>("AlphaButton").ToList())
+        {
+            var letter = RemoveAccents(button.text.ToUpper());
+            if (!targetWord.Any(c => RemoveAccents(c.ToString().ToUpper()) == letter))
+            {
+                wrongLetterButtons.Add(button);
             }
+        }
+
+        if (wrongLetterButtons.Count > 0)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, wrongLetterButtons.Count);
+            var buttonToDisable = wrongLetterButtons[randomIndex];
+            buttonToDisable.SetEnabled(false);
+
+            chosenLetters.Add(buttonToDisable.text.ToUpper());
         }
     }
 
-    void ShowCorrectLetter()
+    private void ShowCorrectLetter()
     {
         for (int i = 0; i < targetWord.Length; i++)
         {
@@ -163,19 +170,13 @@ public class Test : MonoBehaviour
         }
     }
 
-    IEnumerator GetWordDefinition()
+    private IEnumerator GetWordDefinition()
     {
         string requestUrl = CATEGORIE + GameManager.Instance.CurrentCategory;
-
-        Debug.Log("Sending request to: " + requestUrl);
 
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
             yield return request.SendWebRequest();
-
-            Debug.Log("Request completed with status: " + request.result);
-            Debug.Log("Response code: " + request.responseCode);
-            Debug.Log("Response headers: " + request.GetResponseHeaders());
 
             if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
             {
@@ -189,11 +190,9 @@ public class Test : MonoBehaviour
             }
             else if (request.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log("Response: " + request.downloadHandler.text);
                 var response = request.downloadHandler.text;
                 targetWord = ParseWord(response);
 
-                // Initialiser guessedWord après avoir défini targetWord
                 guessedWord = new string('_', targetWord.Length);
                 UpdateWordLabel();
             }
@@ -205,16 +204,37 @@ public class Test : MonoBehaviour
         }
     }
 
-    string ParseWord(string json)
+    private string ParseWord(string json)
     {
-        JArray jArray = JArray.Parse(json);
-        foreach (JObject item in jArray)
+        var jArray = JArray.Parse(json);
+        foreach (var item in jArray)
         {
-            return item.GetValue("name").ToString().ToUpper();
+            return item["name"]?.ToString().ToUpper();
         }
         return null;
     }
 
+    private void UpdateWordLabel()
+    {
+        wordLabel.text = guessedWord;
+    }
+
+    private void GoBack()
+    {
+        UiManager.Instance.GoBackToMenu();
+    }
+
+    private bool IsCorrectLetter(string letter)
+    {
+        return targetWord.Contains(letter);
+    }
+
+    private string RemoveAccents(string text)
+    {
+        return string.Concat(text.Normalize(NormalizationForm.FormD)
+                                .Where(ch => char.GetUnicodeCategory(ch) != UnicodeCategory.NonSpacingMark))
+                      .Normalize(NormalizationForm.FormC);
+    }
 
     [System.Serializable]
     public class DictionaryApiResponse
@@ -245,27 +265,5 @@ public class Test : MonoBehaviour
     public class CategoryResponse
     {
         public CategoryWord[] words; 
-    }
-
-    void UpdateWordLabel()
-    {
-        wordLabel.text = guessedWord;
-    }
-
-    void GoBack()
-    {
-        if (gameManager.Ui != null)
-        {
-            gameManager.Ui.GoBackToMenu();
-        }
-        else
-        {
-            Debug.LogError("UiManager not found!");
-        }
-    }
-
-    bool IsCorrectLetter(string letter)
-    {
-        return targetWord.Contains(letter);
     }
 }

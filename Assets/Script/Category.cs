@@ -88,13 +88,6 @@ public class Category : MonoBehaviour
 
     void GoBack()
     {
-        if (gameManager.Ui != null)
-        {
-            gameManager.Ui.GoBackToMenu();
-        }
-        else
-        {
-            Debug.LogError("UiManager not found!");
-        }
+        UiManager.Instance.GoBackToMenu();
     }
 }

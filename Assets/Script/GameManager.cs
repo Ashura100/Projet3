@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PlayFab;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,7 +30,6 @@ public class GameManager : MonoBehaviour
 
     // Autres membres de la classe GameManager
     public Test currentGame;
-    public UiManager Ui;
     public string currentCategory = "10"; // Devient privée
 
     // Propriété publique pour accéder à currentCategory
@@ -40,11 +40,11 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        currentGame = new Test(this);
+        
     }
     public void Restart()
     {
-        currentGame = new Test(this);
+        SceneManager.LoadScene(0);
     }
 
     public void Paused()

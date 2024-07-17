@@ -132,7 +132,7 @@ public class Pendu : MonoBehaviour
                 if (guessedWord.Equals(targetWord))
                 {
                     information.value = "Félicitations ! Vous avez deviné le mot !";
-                    gameManager.Ui.OnWin();
+                    //gameManager.Ui.OnWin();
                     IsWon = true;
                     // Ajoutez ici votre logique pour la victoire
                 }
@@ -146,7 +146,7 @@ public class Pendu : MonoBehaviour
             if (lifeMax <= 0)
             {
                 information.value = "Game Over ! Vous avez perdu.";
-                gameManager.Ui.OnLose();
+                //gameManager.Ui.OnLose();
                 IsWon = false;
             }
             // Traitez le cas où la lettre choisie est incorrecte
@@ -207,14 +207,14 @@ public class Pendu : MonoBehaviour
 
     void GoBack()
     {
-        if (gameManager.Ui != null)
+        /*if (gameManager.Ui != null)
         {
             gameManager.Ui.GoBackToMenu();
         }
         else
         {
             Debug.LogError("UiManager not found!");
-        }
+        }*/
     }
 
     bool IsCorrectLetter(string letter)
