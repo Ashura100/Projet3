@@ -25,6 +25,5 @@ public class Lose : MonoBehaviour
     private void ReturnToMenu()
     {
         gameManager.Restart();
-        UiManager.Instance.GoBackToMenu();
     }
 }

@@ -117,6 +117,7 @@ public class Test : MonoBehaviour
                     information.value = "Félicitations ! Vous avez deviné le mot !";
                     UiManager.Instance.OnWin();
                     IsWon = true;
+                    GameManager.Instance.gameWon++;
                 }
             }
         }

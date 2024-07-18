@@ -16,6 +16,8 @@ public class Settings : MonoBehaviour
     }
 
     [SerializeField]
+    AudioManager audioManager;
+    [SerializeField]
     GameManager gameManager;
     [SerializeField]
     UIDocument uIDocument;

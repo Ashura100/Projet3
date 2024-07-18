@@ -7,30 +7,14 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     // Instance statique du GameManager
-    private static GameManager instance;
-
-    // Propriété statique pour accéder à l'instance unique
-    public static GameManager Instance
-    {
-        get
-        {
-            // Retourne l'instance existante s'il y en a une, sinon en crée une nouvelle
-            if (instance == null)
-            {
-                instance = FindObjectOfType<GameManager>(); // Recherche GameManager dans la scène
-                if (instance == null)
-                {
-                    GameObject obj = new GameObject("GameManager");
-                    instance = obj.AddComponent<GameManager>();
-                }
-            }
-            return instance;
-        }
-    }
+    public static GameManager Instance;
 
     // Autres membres de la classe GameManager
+    [SerializeField]
     public Test currentGame;
     public string currentCategory = "10"; // Devient privée
+
+    public int gameWon;
 
     // Propriété publique pour accéder à currentCategory
     public string CurrentCategory
@@ -38,9 +22,19 @@ public class GameManager : MonoBehaviour
         get { return currentCategory; }
         set { currentCategory = value; }
     }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            // Recherche de l'instance existante dans la scène
+            Instance = this;
+        }
+        DontDestroyOnLoad(Instance);
+    }
     void Start()
     {
-        
+        gameWon = 0;
     }
     public void Restart()
     {

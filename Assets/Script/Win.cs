@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
 
 public class Win : MonoBehaviour
@@ -25,7 +24,6 @@ public class Win : MonoBehaviour
 
     private void ContinueToPlay()
     {
-        UiManager.Instance.GoBackToMenu();
         gameManager.Restart();
     }
 }

@@ -8,29 +8,7 @@ using UnityEngine.UIElements;
 
 public class UiManager : MonoBehaviour
 {
-    private static UiManager instance;
-
-    // Ajoutez cette propriété pour accéder à l'instance unique de UiManager
-    public static UiManager Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                // Recherche de l'instance existante dans la scène
-                instance = FindObjectOfType<UiManager>();
-
-                // Si aucune instance n'est trouvée, créez une nouvelle instance
-                if (instance == null)
-                {
-                    GameObject singletonObject = new GameObject(typeof(UiManager).Name);
-                    instance = singletonObject.AddComponent<UiManager>();
-                }
-            }
-            return instance;
-        }
-    }
-
+    public static UiManager Instance;
 
     [SerializeField] GameManager gameManager;
     [SerializeField] GameObject startUi;
@@ -41,9 +19,25 @@ public class UiManager : MonoBehaviour
     [SerializeField] GameObject winUi;
     [SerializeField] GameObject loseUi;
 
+    public GameObject currentScreen;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            // Recherche de l'instance existante dans la scène
+            Instance = this;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
+        currentScreen = startUi;
+
+        if(GameManager.Instance.gameWon > 0)
+        {
+            ChangeScreen(currentScreen, gameUi, 0); //0 pour une transition instantannée
+        }
         
     }
 
@@ -52,67 +46,48 @@ public class UiManager : MonoBehaviour
         switch (button.name)
         {
             case "TouchToPlay":
-                ChangeScreen(startUi, gameUi);
+                ChangeScreen(currentScreen, gameUi);
                 break;
             case "Settings":
-                ChangeScreen(startUi, settingsUi);
+                ChangeScreen(currentScreen, settingsUi);
                 break;
             case "Category":
-                ChangeScreen(startUi, categoryUi);
+                ChangeScreen(currentScreen, categoryUi);
                 break;
             case "Classement":
-                ChangeScreen(startUi, classUi);
+                ChangeScreen(currentScreen, classUi);
                 break;
         }
     }
 
-    public void ChangeScreen(GameObject fromScreen, GameObject toScreen)
+    //3ème arguments optionnel est egale à 0.5f par défauts 
+    public void ChangeScreen(GameObject fromScreen, GameObject toScreen, float speed = 0.5f)
     {
-        fromScreen.transform.DOMoveX(-Screen.width, 0.5f).OnComplete(() => fromScreen.SetActive(false)); toScreen.SetActive(true);
-        // Ensure toScreen is positioned off-screen to the right and then animate it into view
-        toScreen.transform.position = new Vector3(Screen.width, toScreen.transform.position.y, toScreen.transform.position.z);
-        toScreen.transform.DOMoveX(0, 0.5f);
+        
+        fromScreen.transform.DOMoveX(-Screen.width, speed).OnComplete(() => { 
+            fromScreen.SetActive(false); 
+            toScreen.SetActive(true); 
+            toScreen.transform.position = new Vector3(Screen.width, toScreen.transform.position.y, toScreen.transform.position.z);
+            toScreen.transform.DOMoveX(0, speed);
+            currentScreen = toScreen;
+        });
+        
     }
 
     public void GoBackToMenu()
     {
         // Determine which screen is currently active and switch to startUi
-        if (gameUi.activeSelf)
-        {
-            ChangeScreen(gameUi, startUi);
-        }
-        else if (settingsUi.activeSelf)
-        {
-            ChangeScreen(settingsUi, startUi);
-        }
-        else if (categoryUi.activeSelf)
-        {
-            ChangeScreen(categoryUi, startUi);
-        }
-        else if (classUi.activeSelf)
-        {
-            ChangeScreen(classUi, startUi);
-        }
-        else if (winUi.activeSelf)
-        {
-            ChangeScreen(winUi, gameUi);
-        }
-        else if (loseUi.activeSelf)
-        {
-            ChangeScreen(loseUi, startUi);
-        }
-
-        return;
+        ChangeScreen(currentScreen, startUi);
     }
 
 
     public void OnWin()
     {
-        ChangeScreen(gameUi, winUi);
+        ChangeScreen(currentScreen, winUi);
     }
 
     public void OnLose()
     {
-        ChangeScreen(gameUi, loseUi);
+        ChangeScreen(currentScreen, loseUi);
     }
 }
