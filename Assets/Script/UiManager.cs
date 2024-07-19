@@ -34,7 +34,12 @@ public class UiManager : MonoBehaviour
     {
         currentScreen = startUi;
 
-        if(GameManager.Instance.gameWon > 0)
+        if(currentScreen = startUi)
+        {
+            AudioManager.Instance.PlayTheme();
+        }
+
+        if (GameManager.Instance.gameWon > 0)
         {
             ChangeScreen(currentScreen, gameUi, 0); //0 pour une transition instantannée
         }
@@ -58,6 +63,7 @@ public class UiManager : MonoBehaviour
                 ChangeScreen(currentScreen, classUi);
                 break;
         }
+        AudioManager.Instance.PlayGameClickSound();
     }
 
     //3ème arguments optionnel est egale à 0.5f par défauts 

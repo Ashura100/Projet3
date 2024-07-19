@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 
 public class Settings : MonoBehaviour
 {
+    public static Settings Instance;
     public enum Difficulty
     {
         Easy,
@@ -49,6 +50,16 @@ public class Settings : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null)
+            Destroy(gameObject);
+        else
+            Instance = this;
+
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void OnEnable()
+    {
         root = GetComponent<UIDocument>().rootVisualElement;
         slider = root.Q<Slider>("Slider");
         toggle = root.Q<Toggle>("FullScreenT");
@@ -76,6 +87,7 @@ public class Settings : MonoBehaviour
 
         toggle.value = UnityEngine.Screen.fullScreen;
     }
+    
     // Start is called before the first frame update
     void Start()
     {

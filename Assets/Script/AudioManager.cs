@@ -6,14 +6,13 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    private AudioSource audioPlayer;
+    public AudioSource audioPlayer;
 
     [SerializeField]
-    private AudioClip clickSound, winSound, gameOverSound;
+    private AudioClip clickSound,gameClickSound, themeSound, winSound, gameOverSound;
 
     private void Awake()
     {
-        audioPlayer = GetComponent<AudioSource>();
 
         if (Instance != null)
             Destroy(gameObject);
@@ -23,6 +22,17 @@ public class AudioManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    public void PlayTheme()
+    {
+        audioPlayer.clip = themeSound;
+        audioPlayer.Play();
+    }
+
+    public void PlayGameClickSound()
+    {
+        audioPlayer.clip = gameClickSound;
+        audioPlayer.Play();
+    }
     public void PlayClickSound()
     {
         audioPlayer.clip = clickSound;

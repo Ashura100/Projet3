@@ -24,6 +24,7 @@ public class Win : MonoBehaviour
 
     private void ContinueToPlay()
     {
+        AudioManager.Instance.PlayClickSound();
         gameManager.Restart();
     }
 }

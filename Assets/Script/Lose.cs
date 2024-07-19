@@ -22,8 +22,14 @@ public class Lose : MonoBehaviour
         returnButton.clickable.clicked += ReturnToMenu;
     }
 
+    private void Start()
+    {
+        AudioManager.Instance.PlayGameOverSound();
+    }
+
     private void ReturnToMenu()
     {
+        AudioManager.Instance.PlayClickSound();
         gameManager.Restart();
     }
 }

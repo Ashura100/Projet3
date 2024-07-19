@@ -13,8 +13,11 @@ public class Test : MonoBehaviour
 {
     [SerializeField] private GameManager gameManager;
     [SerializeField] private UIDocument uIDocument;
+    [SerializeField]
+    private Image Img;
 
     private VisualElement root;
+    VisualElement spriteContainer;
     private Label wordLabel;
     private TextField indiceText;
     private TextField information;
@@ -31,6 +34,8 @@ public class Test : MonoBehaviour
     public int score;
     public int lifeMax;
 
+    public List<Sprite> spritesList;
+
     private void OnEnable()
     {
         Reset();
@@ -40,6 +45,7 @@ public class Test : MonoBehaviour
     {
         root = uIDocument.rootVisualElement;
 
+        spriteContainer = root.Q<VisualElement>("GameContainer");
         wordLabel = root.Q<Label>("Word");
         indiceText = root.Q<TextField>("Indice");
         information = root.Q<TextField>("Information");
@@ -72,6 +78,7 @@ public class Test : MonoBehaviour
 
     private void OnLetterTouch(string chosenLetter)
     {
+        AudioManager.Instance.PlayClickSound();
         chosenLetter = chosenLetter.ToUpper();
 
         if (chosenLetters.Contains(chosenLetter))
@@ -125,6 +132,7 @@ public class Test : MonoBehaviour
         {
             information.value = $"Incorrect letter: {chosenLetter}";
             lifeMax--;
+            UpdateHangmanSprite();
 
             if (lifeMax <= 0)
             {
@@ -137,6 +145,7 @@ public class Test : MonoBehaviour
 
     private void RemoveWrongLetter()
     {
+        AudioManager.Instance.PlayClickSound();
         var wrongLetterButtons = new List<Button>();
 
         foreach (var button in root.Query<Button>("AlphaButton").ToList())
@@ -160,6 +169,7 @@ public class Test : MonoBehaviour
 
     private void ShowCorrectLetter()
     {
+        AudioManager.Instance.PlayClickSound();
         for (int i = 0; i < targetWord.Length; i++)
         {
             if (guessedWord[i] == '_')
@@ -220,8 +230,43 @@ public class Test : MonoBehaviour
         wordLabel.text = guessedWord;
     }
 
+    private void UpdateHangmanSprite()
+    {
+        Debug.Log($"spritesList is null: {spritesList == null}");
+        Debug.Log($"spriteContainer is null: {spriteContainer == null}");
+
+        if (spritesList == null || spritesList.Count == 0)
+        {
+            Debug.LogError("La liste de sprites du pendu est vide ou non définie.");
+            return;
+        }
+
+        if (spriteContainer == null)
+        {
+            Debug.LogError("Le conteneur des sprites est non défini.");
+            return;
+        }
+
+        // Clear existing sprites
+        spriteContainer.Clear();
+
+        int spriteIndex = Mathf.Max(0, spritesList.Count - lifeMax - 1);
+
+        if (spriteIndex >= 0 && spriteIndex < spritesList.Count)
+        {
+            var image = new Image();
+            image.sprite = spritesList[spriteIndex];
+            spriteContainer.Add(image);
+        }
+        else
+        {
+            Debug.LogWarning("Index du sprite hors des limites.");
+        }
+    }
+
     private void GoBack()
     {
+        AudioManager.Instance.PlayClickSound();
         UiManager.Instance.GoBackToMenu();
     }
 

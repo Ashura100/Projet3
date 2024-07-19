@@ -51,6 +51,7 @@ public class Category : MonoBehaviour
 
     void OnCategoryButtonClicked(string category)
     {
+        AudioManager.Instance.PlayClickSound();
         GameManager.Instance.currentCategory = category;
         StartCoroutine(GetCategoryData(category));
     }
@@ -88,6 +89,7 @@ public class Category : MonoBehaviour
 
     void GoBack()
     {
+        AudioManager.Instance.PlayClickSound();
         UiManager.Instance.GoBackToMenu();
     }
 }

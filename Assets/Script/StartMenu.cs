@@ -37,6 +37,7 @@ public class StartMenu : MonoBehaviour
 
     private void OnButtonTouch(Button button)
     {
+        AudioManager.Instance.PlayGameClickSound();
         UiManager.Instance.OnButtonTouch(button);
     }
 }
