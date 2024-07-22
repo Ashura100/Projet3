@@ -87,18 +87,6 @@ public class Settings : MonoBehaviour
 
         toggle.value = UnityEngine.Screen.fullScreen;
     }
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     void OnChangeDifficulty(EventBase eventBase)
     {

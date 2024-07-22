@@ -19,6 +19,7 @@ public class Test : MonoBehaviour
     private VisualElement root;
     VisualElement spriteContainer;
     private Label wordLabel;
+    private TextField scoreText;
     private TextField indiceText;
     private TextField information;
     private Button goBack;
@@ -32,6 +33,7 @@ public class Test : MonoBehaviour
 
     public bool IsWon;
     public int score;
+    int scoreThreshold = 2; // Exemple : 5 points requis pour révéler une lettre
     public int lifeMax;
 
     public List<Sprite> spritesList;
@@ -47,6 +49,7 @@ public class Test : MonoBehaviour
 
         spriteContainer = root.Q<VisualElement>("GameContainer");
         wordLabel = root.Q<Label>("Word");
+        scoreText = root.Q<TextField>("Score");
         indiceText = root.Q<TextField>("Indice");
         information = root.Q<TextField>("Information");
         goBack = root.Q<Button>("Return");
@@ -70,10 +73,14 @@ public class Test : MonoBehaviour
         UpdateWordLabel();
 
         lifeMax = 11; // Nombre de vies basé sur un nombre fixe pour les jeux de pendu
-        score = 0; // Initialiser le score à 0
-
+        score = 0;
         // Rechercher la définition du mot cible à l'aide de l'API de dictionnaire
         StartCoroutine(GetWordDefinition());
+    }
+
+    private void Update()
+    {
+        scoreText.value = $"{score}";
     }
 
     private void OnLetterTouch(string chosenLetter)
@@ -148,6 +155,12 @@ public class Test : MonoBehaviour
         AudioManager.Instance.PlayClickSound();
         var wrongLetterButtons = new List<Button>();
 
+        if (score < scoreThreshold)
+        {
+            information.value = $"Score insuffisant pour supprimer une lettre. Score actuel : {score}";
+            return;
+        }
+
         foreach (var button in root.Query<Button>("AlphaButton").ToList())
         {
             var letter = RemoveAccents(button.text.ToUpper());
@@ -165,11 +178,32 @@ public class Test : MonoBehaviour
 
             chosenLetters.Add(buttonToDisable.text.ToUpper());
         }
+
+        score -= scoreThreshold;
     }
 
     private void ShowCorrectLetter()
     {
         AudioManager.Instance.PlayClickSound();
+
+        // Vérifier si le score atteint le seuil requis
+        if (score < scoreThreshold)
+        {
+            information.value = $"Score insuffisant pour révéler une lettre. Score actuel : {score}";
+            return;
+        }
+
+        // Vérifier si le mot a déjà été trouvé
+        if (guessedWord.Equals(targetWord))
+        {
+            information.value = "Le mot est trouvé !";
+            UiManager.Instance.OnWin();
+            IsWon = true;
+            GameManager.Instance.gameWon++;
+            return;
+        }
+
+        // Révéler une lettre correcte
         for (int i = 0; i < targetWord.Length; i++)
         {
             if (guessedWord[i] == '_')
@@ -179,6 +213,10 @@ public class Test : MonoBehaviour
                 break;
             }
         }
+
+        // Déduire des points pour l'utilisation de la fonctionnalité
+        // Par exemple, déduire 5 points pour utiliser cette fonctionnalité
+        score -= scoreThreshold;
     }
 
     private IEnumerator GetWordDefinition()
@@ -277,9 +315,29 @@ public class Test : MonoBehaviour
 
     private string RemoveAccents(string text)
     {
-        return string.Concat(text.Normalize(NormalizationForm.FormD)
-                                .Where(ch => char.GetUnicodeCategory(ch) != UnicodeCategory.NonSpacingMark))
-                      .Normalize(NormalizationForm.FormC);
+        if (string.IsNullOrEmpty(text))
+        {
+            return text;
+        }
+
+        // Normaliser le texte en Forme D (décompose les caractères accentués)
+        var normalizedText = text.Normalize(NormalizationForm.FormD);
+        var stringBuilder = new StringBuilder();
+
+        // Parcourir chaque caractère
+        foreach (var ch in normalizedText)
+        {
+            var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(ch);
+
+            // Ajouter le caractère s'il n'est pas une marque diacritique
+            if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+            {
+                stringBuilder.Append(ch);
+            }
+        }
+
+        // Re-normaliser en Forme C
+        return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
     }
 
     [System.Serializable]

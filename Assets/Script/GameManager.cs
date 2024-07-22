@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using PlayFab;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -13,7 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public Test currentGame;
     public string currentCategory = "10"; // Devient privée
-
+    public int score = 0;
     public int gameWon;
 
     // Propriété publique pour accéder à currentCategory
@@ -35,6 +34,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         gameWon = 0;
+        score = 0;
     }
     public void Restart()
     {
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void Exit()
+    /*public void Exit()
     {
         if (Application.isEditor)
         {
@@ -57,5 +57,5 @@ public class GameManager : MonoBehaviour
         {
             Application.Quit();
         }
-    }
+    }*/
 }

@@ -3,6 +3,15 @@
     font-size: 35px;
     color: rgb(255, 255, 255);
     -unity-text-align: middle-center;
+    -unity-font-definition: initial;
+    -unity-font: url("project://database/Assets/Font/OptimusPrincepsSemiBold.ttf?fileID=12800000&guid=ec558a9a0f5563b4eb9ef3702e2acc09&type=3#OptimusPrincepsSemiBold");
+}
+
+#Score > .unity-base-text-field__input {
+    background-color: rgba(0, 0, 0, 0);
+    font-size: 35px;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
 }
 
 #Indice > .unity-base-text-field__input {
@@ -10,9 +19,12 @@
     font-size: 35px;
     color: rgb(255, 255, 255);
     -unity-text-align: middle-center;
-
 }
 
-#AlphaButton{
-    font-size: 25px;
+#AlphaButton {
+    font-size: 35px;
+    -unity-font-definition: initial;
+    -unity-font: url("project://database/Assets/Font/OptimusPrincepsSemiBold.ttf?fileID=12800000&guid=ec558a9a0f5563b4eb9ef3702e2acc09&type=3#OptimusPrincepsSemiBold");
+    color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
 }
