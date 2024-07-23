@@ -6,10 +6,11 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    public AudioSource audioPlayer;
+    public AudioSource musicPlayer;
+    public AudioSource sfxPlayer;
 
     [SerializeField]
-    private AudioClip clickSound,gameClickSound, themeSound, winSound, gameOverSound;
+    private AudioClip clickSound, gameClickSound, themeSound, gameSound, winSound, gameOverSound;
 
     private void Awake()
     {
@@ -24,30 +25,42 @@ public class AudioManager : MonoBehaviour
 
     public void PlayTheme()
     {
-        audioPlayer.clip = themeSound;
-        audioPlayer.Play();
+        musicPlayer.clip = themeSound;
+        musicPlayer.Play();
+    }
+
+    public void PlayGameTheme()
+    {
+        musicPlayer.clip = gameSound;
+        musicPlayer.Play();
     }
 
     public void PlayGameClickSound()
     {
-        audioPlayer.clip = gameClickSound;
-        audioPlayer.Play();
+        sfxPlayer.clip = gameClickSound;
+        sfxPlayer.Play();
     }
+
     public void PlayClickSound()
     {
-        audioPlayer.clip = clickSound;
-        audioPlayer.Play();
+        sfxPlayer.clip = clickSound;
+        sfxPlayer.Play();
     }
 
     public void PlayWinSound()
     {
-        audioPlayer.clip = winSound;
-        audioPlayer.Play();
+        sfxPlayer.clip = winSound;
+        sfxPlayer.Play();
     }
 
     public void PlayGameOverSound()
     {
-        audioPlayer.clip = gameOverSound;
-        audioPlayer.Play();
+        sfxPlayer.clip = gameOverSound;
+        sfxPlayer.Play();
+    }
+
+    public void StopCurrentSound()
+    {
+        musicPlayer.Stop();
     }
 }

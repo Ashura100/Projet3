@@ -18,6 +18,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] GameObject classUi;
     [SerializeField] GameObject winUi;
     [SerializeField] GameObject loseUi;
+    [SerializeField] GameObject pauseUi;
 
     public GameObject currentScreen;
 
@@ -42,6 +43,7 @@ public class UiManager : MonoBehaviour
         if (GameManager.Instance.gameWon > 0)
         {
             ChangeScreen(currentScreen, gameUi, 0); //0 pour une transition instantannée
+            AudioManager.Instance.PlayGameTheme();
         }
         
     }
@@ -76,8 +78,23 @@ public class UiManager : MonoBehaviour
             toScreen.transform.position = new Vector3(Screen.width, toScreen.transform.position.y, toScreen.transform.position.z);
             toScreen.transform.DOMoveX(0, speed);
             currentScreen = toScreen;
+
+            AudioManager.Instance.StopCurrentSound();
+            if (currentScreen == startUi)
+            {
+                AudioManager.Instance.PlayTheme();
+            }
+            else if (currentScreen == gameUi)
+            {
+                AudioManager.Instance.PlayGameTheme();
+            }
         });
         
+    }
+
+    public void PauseMenu()
+    {
+        ChangeScreen(currentScreen, pauseUi);
     }
 
     public void GoBackToMenu()

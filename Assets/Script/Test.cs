@@ -13,8 +13,7 @@ public class Test : MonoBehaviour
 {
     [SerializeField] private GameManager gameManager;
     [SerializeField] private UIDocument uIDocument;
-    [SerializeField]
-    private Image Img;
+    [SerializeField] private Image Img;
 
     private VisualElement root;
     VisualElement spriteContainer;
@@ -23,6 +22,7 @@ public class Test : MonoBehaviour
     private TextField indiceText;
     private TextField information;
     private Button goBack;
+    private Button pause;
     private Button bonusRemoveWrongLetter;
     private Button bonusShowCorrectLetter;
 
@@ -32,7 +32,6 @@ public class Test : MonoBehaviour
     public const string CATEGORIE = "https://trouve-mot.fr/api/categorie/";
 
     public bool IsWon;
-    public int score;
     int scoreThreshold = 2; // Exemple : 5 points requis pour révéler une lettre
     public int lifeMax;
 
@@ -53,6 +52,7 @@ public class Test : MonoBehaviour
         indiceText = root.Q<TextField>("Indice");
         information = root.Q<TextField>("Information");
         goBack = root.Q<Button>("Return");
+        pause = root.Q<Button>("PauseButton");
         bonusRemoveWrongLetter = root.Q<Button>("CancelLetter");
         bonusShowCorrectLetter = root.Q<Button>("AddLetter");
 
@@ -60,6 +60,7 @@ public class Test : MonoBehaviour
 
         bonusRemoveWrongLetter.clicked += RemoveWrongLetter;
         bonusShowCorrectLetter.clicked += ShowCorrectLetter;
+        pause.clicked += PauseClicked;
         goBack.clicked += GoBack;
 
         var alphaButtons = root.Query<Button>("AlphaButton").ToList();
@@ -69,18 +70,23 @@ public class Test : MonoBehaviour
             button.clicked += () => OnLetterTouch(letter);
         }
 
+        wordLabel.AddToClassList("word-label");
         guessedWord = new string('_', targetWord.Length);
         UpdateWordLabel();
 
         lifeMax = 11; // Nombre de vies basé sur un nombre fixe pour les jeux de pendu
-        score = 0;
         // Rechercher la définition du mot cible à l'aide de l'API de dictionnaire
         StartCoroutine(GetWordDefinition());
     }
 
+    private void PauseClicked()
+    {
+        gameManager.Paused();
+    }
+
     private void Update()
     {
-        scoreText.value = $"{score}";
+        scoreText.value = $"{GameManager.Instance.score}";
     }
 
     private void OnLetterTouch(string chosenLetter)
@@ -117,7 +123,7 @@ public class Test : MonoBehaviour
                 {
                     guessedWordArray[i] = targetWord[i];
                     letterGuessed = true;
-                    score++;
+                    GameManager.Instance.score++;
                 }
             }
 
@@ -155,9 +161,9 @@ public class Test : MonoBehaviour
         AudioManager.Instance.PlayClickSound();
         var wrongLetterButtons = new List<Button>();
 
-        if (score < scoreThreshold)
+        if (GameManager.Instance.score < scoreThreshold)
         {
-            information.value = $"Score insuffisant pour supprimer une lettre. Score actuel : {score}";
+            information.value = $"Score insuffisant pour supprimer une lettre. Score actuel : {GameManager.Instance.score}";
             return;
         }
 
@@ -179,7 +185,7 @@ public class Test : MonoBehaviour
             chosenLetters.Add(buttonToDisable.text.ToUpper());
         }
 
-        score -= scoreThreshold;
+        GameManager.Instance.score -= scoreThreshold;
     }
 
     private void ShowCorrectLetter()
@@ -187,9 +193,9 @@ public class Test : MonoBehaviour
         AudioManager.Instance.PlayClickSound();
 
         // Vérifier si le score atteint le seuil requis
-        if (score < scoreThreshold)
+        if (GameManager.Instance.score < scoreThreshold)
         {
-            information.value = $"Score insuffisant pour révéler une lettre. Score actuel : {score}";
+            information.value = $"Score insuffisant pour révéler une lettre. Score actuel : {GameManager.Instance.score}";
             return;
         }
 
@@ -216,7 +222,7 @@ public class Test : MonoBehaviour
 
         // Déduire des points pour l'utilisation de la fonctionnalité
         // Par exemple, déduire 5 points pour utiliser cette fonctionnalité
-        score -= scoreThreshold;
+        GameManager.Instance.score -= scoreThreshold;
     }
 
     private IEnumerator GetWordDefinition()

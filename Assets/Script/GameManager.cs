@@ -12,8 +12,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public Test currentGame;
     public string currentCategory = "10"; // Devient privée
-    public int score = 0;
+    public int score;
     public int gameWon;
+    public bool isPaused;
 
     // Propriété publique pour accéder à currentCategory
     public string CurrentCategory
@@ -34,7 +35,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         gameWon = 0;
-        score = 0;
     }
     public void Restart()
     {
@@ -43,10 +43,12 @@ public class GameManager : MonoBehaviour
 
     public void Paused()
     {
-
+        isPaused = true;
+        UiManager.Instance.PauseMenu();
+        Debug.Log("Pause");
     }
-
-    /*public void Exit()
+#if UNITY_EDITOR
+    public void Exit()
     {
         if (Application.isEditor)
         {
@@ -57,5 +59,6 @@ public class GameManager : MonoBehaviour
         {
             Application.Quit();
         }
-    }*/
+    }
+#endif
 }

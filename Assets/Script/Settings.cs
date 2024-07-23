@@ -26,6 +26,7 @@ public class Settings : MonoBehaviour
 
     Button goBack;
     Slider slider;
+    Slider sfxSlider;
     Toggle toggle;
 
     private List<Button> resolutionButtons;
@@ -45,6 +46,7 @@ public class Settings : MonoBehaviour
     };
 
     public AudioMixer audioMixer;
+    public AudioMixer sfxAudioMixer;
 
     public static Difficulty currentDifficulty = Difficulty.Medium;
 
@@ -62,6 +64,7 @@ public class Settings : MonoBehaviour
     {
         root = GetComponent<UIDocument>().rootVisualElement;
         slider = root.Q<Slider>("Slider");
+        sfxSlider = root.Q<Slider>("Sfx");
         toggle = root.Q<Toggle>("FullScreenT");
         goBack = root.Q<Button>("Return");
 
@@ -83,6 +86,8 @@ public class Settings : MonoBehaviour
 
         slider.RegisterValueChangedCallback(evt => SetVolume(evt.newValue));
 
+        sfxSlider.RegisterValueChangedCallback(evt => SetSfxVolume(evt.newValue));
+
         toggle.RegisterValueChangedCallback(evt => SetFullScreen(evt.newValue));
 
         toggle.value = UnityEngine.Screen.fullScreen;
@@ -98,6 +103,12 @@ public class Settings : MonoBehaviour
     {
         float dB = Mathf.Log10(volume) * 20;
         audioMixer.SetFloat("Volume", dB);
+    }
+
+    public void SetSfxVolume(float volume)
+    {
+        float dB = Mathf.Log10(volume) * 20;
+        sfxAudioMixer.SetFloat("Volume", dB);
     }
 
     public void SetQuality(int width, int height)
