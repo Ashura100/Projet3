@@ -18,6 +18,7 @@ public class StartMenu : MonoBehaviour
     Button settings;
     Button category;
     Button classement;
+
     void OnEnable()
     {
         root = uIDocument.rootVisualElement;

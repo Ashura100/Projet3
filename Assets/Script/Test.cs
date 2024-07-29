@@ -74,7 +74,7 @@ public class Test : MonoBehaviour
         guessedWord = new string('_', targetWord.Length);
         UpdateWordLabel();
 
-        lifeMax = 11; // Nombre de vies basé sur un nombre fixe pour les jeux de pendu
+        lifeMax = 10; // Nombre de vies basé sur un nombre fixe pour les jeux de pendu
         // Rechercher la définition du mot cible à l'aide de l'API de dictionnaire
         StartCoroutine(GetWordDefinition());
     }

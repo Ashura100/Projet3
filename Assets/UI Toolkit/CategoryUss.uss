@@ -1,0 +1,136 @@
+#CorpsButton:hover {
+    scale: 1.5 1.5;
+    transition-property: scale, scale;
+    transition-timing-function: ease-in-bounce, ease-out-bounce;
+    transition-duration: 1s, 1s;
+    color: rgb(145, 100, 0);
+}
+
+.button-corps {
+    position: absolute;
+    max-width: 2556px;
+    max-height: 1179px;
+    min-width: 100px;
+    min-height: 100px;
+    width: 20%;
+    height: 20%;
+    align-self: flex-start;
+    top: 50%;
+    left: auto;
+    font-size: 25px;
+    background-color: rgba(188, 188, 188, 0);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+}
+
+#ArtButton:hover {
+    scale: 1.5 1.5;
+    transition-property: scale, scale;
+    transition-duration: 1s, 1s;
+    transition-timing-function: ease-in-bounce, ease-out-bounce;
+    color: rgb(145, 100, 0);
+}
+
+.button-arts {
+    position: absolute;
+    max-width: 2556px;
+    max-height: 1179px;
+    min-width: 100px;
+    min-height: 100px;
+    width: 20%;
+    height: 20%;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 25%;
+    align-self: flex-start;
+    font-size: 25px;
+    background-color: rgba(188, 188, 188, 0);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+}
+
+#AnimalButton:hover {
+    scale: 1.5 1.5;
+    transition-property: scale, scale;
+    transition-duration: 1s, 1s;
+    transition-timing-function: ease-in-bounce, ease-out-bounce;
+    color: rgb(145, 100, 0);
+}
+
+.button-animals {
+    position: absolute;
+    max-width: 2556px;
+    max-height: 1179px;
+    min-width: 100px;
+    min-height: 100px;
+    width: 20%;
+    height: 20%;
+    top: 50%;
+    left: auto;
+    align-self: flex-end;
+    font-size: 25px;
+    right: 25%;
+    background-color: rgba(188, 188, 188, 0);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+}
+
+#ArmyButton:hover {
+    scale: 1.5 1.5;
+    transition-property: scale, scale;
+    transition-duration: 1s, 1s;
+    transition-timing-function: ease-in-bounce, ease-out-bounce;
+    color: rgb(145, 100, 0);
+}
+
+.button-army {
+    position: absolute;
+    max-width: 2556px;
+    max-height: 1179px;
+    min-width: 100px;
+    min-height: 100px;
+    width: 20%;
+    height: 20%;
+    top: 50%;
+    left: auto;
+    align-self: flex-end;
+    font-size: 25px;
+    background-color: rgba(188, 188, 188, 0);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+}
+
+#Return:hover {
+    scale: 1.5 1.5;
+    color: rgb(145, 100, 0);
+    transition-property: scale, scale;
+    transition-duration: 1s, 1s;
+    transition-timing-function: ease-in-bounce, ease-out-bounce;
+}
+
+.button-return {
+    width: 10%;
+    height: 5%;
+    max-width: 2556px;
+    max-height: 1179px;
+    min-width: 100px;
+    min-height: 100px;
+    position: absolute;
+    top: 80%;
+    left: 5%;
+    align-self: flex-start;
+    font-size: 45px;
+    -unity-font: url("project://database/Assets/Font/OptimusPrincepsSemiBold.ttf?fileID=12800000&guid=ec558a9a0f5563b4eb9ef3702e2acc09&type=3#OptimusPrincepsSemiBold");
+    -unity-font-definition: initial;
+    color: rgb(255, 255, 255);
+    background-color: rgba(188, 188, 188, 0);
+}

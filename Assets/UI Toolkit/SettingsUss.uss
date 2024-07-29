@@ -1,0 +1,56 @@
+#ButtonRes:hover {
+    scale: 1.5 1.5;
+    transition-property: scale, scale;
+    transition-duration: 1s, 1s;
+    transition-timing-function: ease-in-bounce, ease-out-bounce;
+    transition-delay: 0s, 0s;
+}
+
+.button-resolution {
+    position: absolute;
+    align-self: flex-end;
+    right: 50%;
+    max-width: 2556px;
+    max-height: 1179px;
+    min-width: 100px;
+    min-height: 100px;
+    width: 10%;
+    height: 5%;
+    top: auto;
+    font-size: 60px;
+    background-color: rgba(188, 188, 188, 0);
+    color: rgb(255, 255, 255);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+}
+
+#Return:hover {
+    scale: 1.5 1.5;
+    transition-property: scale, scale;
+    transition-timing-function: ease-in-bounce, ease-out-bounce;
+    transition-duration: 1s, 1s;
+}
+
+.button-return {
+    max-width: 2556px;
+    max-height: 1179px;
+    min-width: 100px;
+    min-height: 100px;
+    width: 15%;
+    height: 5%;
+    position: absolute;
+    top: 80%;
+    align-self: flex-start;
+    left: 5%;
+    font-size: 50px;
+    -unity-font-definition: initial;
+    -unity-font: url("project://database/Assets/Font/OptimusPrincepsSemiBold.ttf?fileID=12800000&guid=ec558a9a0f5563b4eb9ef3702e2acc09&type=3#OptimusPrincepsSemiBold");
+    background-color: rgba(188, 188, 188, 0);
+    color: rgb(255, 255, 255);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+}

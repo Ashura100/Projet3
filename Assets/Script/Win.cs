@@ -22,6 +22,11 @@ public class Win : MonoBehaviour
         continueButton.clickable.clicked += ContinueToPlay;
     }
 
+    private void Start()
+    {
+        AudioManager.Instance.PlayWinSound();
+    }
+
     private void ContinueToPlay()
     {
         AudioManager.Instance.PlayClickSound();

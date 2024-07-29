@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Createuss.uss?fileID=7433441132597879392&amp;guid=cc17dc2b87ab8f847bd9358f3fbdcb96&amp;type=3#Createuss" />
+    <ui:VisualElement name="Background" style="flex-grow: 1; background-color: rgb(0, 0, 0); position: absolute; left: 0; top: 0; right: 0; bottom: 0;">
+        <ui:VisualElement name="HangmanRun" style="flex-grow: 1; position: absolute; max-width: 2556px; max-height: 1179px; min-width: 100px; min-height: 100px; left: auto; top: auto; right: auto; bottom: auto; align-self: center; width: 50%; height: 100%; background-image: url(&quot;project://database/Assets/Sprite/Gallows%20Rune.png?fileID=21300000&amp;guid=5644c874f0a126247967b1769c3515f8&amp;type=3#Gallows Rune&quot;);" />
+        <ui:Label tabindex="-1" text="HangMan" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-text-align: middle-center; -unity-font-definition: initial; -unity-font: url(&quot;project://database/Assets/Font/OptimusPrincepsSemiBold.ttf?fileID=12800000&amp;guid=ec558a9a0f5563b4eb9ef3702e2acc09&amp;type=3#OptimusPrincepsSemiBold&quot;); align-self: center; position: absolute; max-width: 2556px; max-height: 1179%; min-width: 100px; min-height: 100px; color: rgb(255, 255, 255); font-size: 210px; width: 85%; height: 30%; top: 20%;" />
+        <ui:Button text="Create Account" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Create" class="button-create" />
+        <ui:Button text="Sign Up" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Sign" class="button-sign" />
+    </ui:VisualElement>
+</ui:UXML>

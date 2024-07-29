@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource sfxPlayer;
 
     [SerializeField]
-    private AudioClip clickSound, gameClickSound, themeSound, gameSound, winSound, gameOverSound;
+    private AudioClip clickSound, gameClickSound, createAccountSound, themeSound, gameSound, winSound, gameOverSound;
 
     private void Awake()
     {
@@ -21,6 +21,12 @@ public class AudioManager : MonoBehaviour
             Instance = this;
 
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void CreateAccountTheme()
+    {
+        musicPlayer.clip = createAccountSound;
+        musicPlayer.Play();
     }
 
     public void PlayTheme()

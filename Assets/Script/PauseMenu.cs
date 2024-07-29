@@ -35,7 +35,7 @@ public class PauseMenu : MonoBehaviour
 
     void ContinueToPlay()
     {
-        gameManager.Restart();
+        UiManager.Instance.ChangeScreen(UiManager.Instance.currentScreen, UiManager.Instance.gameUi);
     }
 
     private void OnButtonTouch(Button button)

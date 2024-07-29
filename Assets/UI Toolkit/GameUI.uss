@@ -29,6 +29,141 @@
     background-color: rgba(0, 0, 0, 0);
 }
 
-.word-label{
-    letter-spacing : 5px;
+.word-label {
+    letter-spacing: 5px;
+}
+
+#PauseButton:hover {
+    scale: 1.5 1.5;
+    transition-property: scale, scale;
+    transition-timing-function: ease-in-bounce, ease-out-bounce;
+    transition-duration: 1s, 1s;
+}
+
+#CancelLetter:hover {
+    scale: 1.5 1.5;
+    transition-property: scale, scale;
+    transition-duration: 1s, 1s;
+    transition-timing-function: ease-in-bounce, ease-out-bounce;
+}
+
+#AddLetter:hover {
+    scale: 1.5 1.5;
+    transition-property: scale, scale;
+    transition-duration: 1s, 1s;
+    transition-timing-function: ease-in-bounce, ease-out-bounce;
+}
+
+.button-pause {
+    position: absolute;
+    align-self: center;
+    width: 55%;
+    height: 5%;
+    max-width: 2556px;
+    max-height: 1179px;
+    min-width: 100px;
+    min-height: 100px;
+    -unity-font-definition: initial;
+    -unity-font: url("project://database/Assets/Font/OptimusPrincepsSemiBold.ttf?fileID=12800000&guid=ec558a9a0f5563b4eb9ef3702e2acc09&type=3#OptimusPrincepsSemiBold");
+    font-size: 35px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(188, 188, 188, 0);
+    top: 20%;
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+}
+
+.button-cancel {
+    position: absolute;
+    align-self: center;
+    top: 45%;
+    right: auto;
+    width: 100%;
+    max-width: 2556px;
+    max-height: 1179px;
+    min-width: 100px;
+    min-height: 100px;
+    height: 5%;
+    font-size: 25px;
+    background-color: rgba(188, 188, 188, 0);
+    -unity-font-definition: initial;
+    -unity-font: url("project://database/Assets/Font/OptimusPrincepsSemiBold.ttf?fileID=12800000&guid=ec558a9a0f5563b4eb9ef3702e2acc09&type=3#OptimusPrincepsSemiBold");
+    color: rgb(255, 255, 255);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+}
+
+.button-add {
+    position: absolute;
+    align-self: center;
+    top: 70%;
+    right: auto;
+    width: 100%;
+    max-width: 2556px;
+    max-height: 1179px;
+    min-width: 100px;
+    min-height: 100px;
+    height: 5%;
+    font-size: 25px;
+    color: rgb(255, 255, 255);
+    -unity-font-definition: initial;
+    -unity-font: url("project://database/Assets/Font/OptimusPrincepsSemiBold.ttf?fileID=12800000&guid=ec558a9a0f5563b4eb9ef3702e2acc09&type=3#OptimusPrincepsSemiBold");
+    background-color: rgba(188, 188, 188, 0);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+}
+
+#Return:hover {
+    scale: 1.5 1.5;
+    transition-property: scale, scale;
+    transition-duration: 1s, 1s;
+    transition-timing-function: ease-in-bounce, ease-out-bounce;
+}
+
+.button-return {
+    position: absolute;
+    align-self: flex-start;
+    top: 80%;
+    left: 5%;
+    max-width: 2556px;
+    max-height: 1179px;
+    min-width: 100px;
+    min-height: 100px;
+    width: 10%;
+    height: 5%;
+    font-size: 45px;
+    -unity-font-definition: initial;
+    -unity-font: url("project://database/Assets/Font/OptimusPrincepsSemiBold.ttf?fileID=12800000&guid=ec558a9a0f5563b4eb9ef3702e2acc09&type=3#OptimusPrincepsSemiBold");
+    color: rgb(255, 255, 255);
+    background-color: rgba(188, 188, 188, 0);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+}
+
+#AlphaButton:hover {
+    scale: 1.5 1.5;
+    transition-property: scale, scale;
+    transition-duration: 1s, 1s;
+    transition-timing-function: ease-in-bounce, ease-out-bounce;
+}
+
+.button-alpha {
+    position: absolute;
+    top: auto;
+    align-self: flex-start;
+    right: auto;
+    max-width: 2556px;
+    max-height: 1179px;
+    min-width: 1px;
+    min-height: 1px;
+    width: 5%;
+    height: 25%;
 }

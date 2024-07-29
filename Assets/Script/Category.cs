@@ -19,7 +19,7 @@ public class Category : MonoBehaviour
     Button animalButton;
     Button armyButton;
     public const string CATEGORIE = "https://trouve-mot.fr/api/categorie/";
-    void Awake()
+    void OnEnable()
     {
         root = uIDocument.rootVisualElement;
 
@@ -35,17 +35,6 @@ public class Category : MonoBehaviour
         artButton.clicked += () => OnCategoryButtonClicked("10");
         animalButton.clicked += () => OnCategoryButtonClicked("19");
         armyButton.clicked += () => OnCategoryButtonClicked("26");
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     void OnCategoryButtonClicked(string category)

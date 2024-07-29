@@ -1,0 +1,28 @@
+#Return:hover {
+    scale: 1.5 1.5;
+    transition-property: scale, scale;
+    transition-duration: 1s, 1s;
+    transition-timing-function: ease-in-bounce, ease-out-bounce;
+    color: rgb(145, 100, 0);
+}
+
+.button-return {
+    position: absolute;
+    width: 20%;
+    height: 5%;
+    max-width: 2556px;
+    max-height: 1179px;
+    min-width: 100px;
+    min-height: 100px;
+    top: 80%;
+    align-self: center;
+    -unity-font-definition: initial;
+    -unity-font: url("project://database/Assets/Font/OptimusPrincepsSemiBold.ttf?fileID=12800000&guid=ec558a9a0f5563b4eb9ef3702e2acc09&type=3#OptimusPrincepsSemiBold");
+    font-size: 40px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(188, 188, 188, 0);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+}

@@ -1,0 +1,73 @@
+#Continue:hover {
+    scale: 1.5 1.5;
+    transition-property: scale, scale;
+    transition-duration: 1s, 1s;
+    transition-timing-function: ease-in-bounce, ease-out-bounce;
+    color: rgb(145, 100, 0);
+}
+
+#Settings:hover {
+    scale: 1.5 1.5;
+    transition-property: scale, scale;
+    transition-duration: 1s, 1s;
+    transition-timing-function: ease-in-bounce, ease-out-bounce;
+    color: rgb(145, 100, 0);
+}
+
+#ReturnMenu:hover {
+    scale: 1.5 1.5;
+    transition-property: scale, scale;
+    transition-duration: 1s, 1s;
+    transition-timing-function: ease-in-bounce, ease-out-bounce;
+    color: rgb(145, 100, 0);
+}
+
+.button-continue {
+    position: absolute;
+    align-self: center;
+    max-width: 2556px;
+    max-height: 1179px;
+    min-width: 100px;
+    min-height: 100px;
+    width: 50%;
+    height: 10%;
+    font-size: 50px;
+    -unity-font-definition: initial;
+    -unity-font: url("project://database/Assets/Font/OptimusPrincepsSemiBold.ttf?fileID=12800000&guid=ec558a9a0f5563b4eb9ef3702e2acc09&type=3#OptimusPrincepsSemiBold");
+    color: rgb(255, 255, 255);
+    background-color: rgba(188, 188, 188, 0);
+}
+
+.button-settings {
+    position: absolute;
+    align-self: center;
+    width: 50%;
+    height: 10%;
+    max-width: 2556px;
+    max-height: 1179px;
+    min-width: 100px;
+    min-height: 100px;
+    top: 35%;
+    -unity-font: url("project://database/Assets/Font/OptimusPrincepsSemiBold.ttf?fileID=12800000&guid=ec558a9a0f5563b4eb9ef3702e2acc09&type=3#OptimusPrincepsSemiBold");
+    -unity-font-definition: initial;
+    color: rgb(255, 255, 255);
+    font-size: 50px;
+    background-color: rgba(188, 188, 188, 0);
+}
+
+.button-return {
+    position: absolute;
+    align-self: center;
+    top: 71%;
+    width: 50%;
+    height: 10%;
+    max-width: 2556px;
+    max-height: 1179px;
+    min-width: 100px;
+    min-height: 100px;
+    font-size: 50px;
+    -unity-font: url("project://database/Assets/Font/OptimusPrincepsSemiBold.ttf?fileID=12800000&guid=ec558a9a0f5563b4eb9ef3702e2acc09&type=3#OptimusPrincepsSemiBold");
+    -unity-font-definition: initial;
+    color: rgb(255, 255, 255);
+    background-color: rgba(188, 188, 188, 0);
+}

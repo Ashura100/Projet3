@@ -10,17 +10,24 @@ public class UiManager : MonoBehaviour
 {
     public static UiManager Instance;
 
-    [SerializeField] GameManager gameManager;
-    [SerializeField] GameObject startUi;
-    [SerializeField] GameObject gameUi;
-    [SerializeField] GameObject settingsUi;
-    [SerializeField] GameObject categoryUi;
-    [SerializeField] GameObject classUi;
-    [SerializeField] GameObject winUi;
-    [SerializeField] GameObject loseUi;
-    [SerializeField] GameObject pauseUi;
+    [SerializeField] public GameManager gameManager;
+
+    [SerializeField] public GameObject createOrSignUi;
+    [SerializeField] public GameObject createAccountUi;
+    [SerializeField] public GameObject signUpUi;
+    [SerializeField] public GameObject startUi;
+    [SerializeField] public GameObject gameUi;
+    [SerializeField] public GameObject settingsUi;
+    [SerializeField] public GameObject categoryUi;
+    [SerializeField] public GameObject classUi;
+    [SerializeField] public GameObject winUi;
+    [SerializeField] public GameObject loseUi;
+    [SerializeField] public GameObject pauseUi;
 
     public GameObject currentScreen;
+
+    private float validateSlide;
+    private float easeTimeSeconds = 1.2f;
 
     private void Awake()
     {
@@ -33,9 +40,14 @@ public class UiManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentScreen = startUi;
+        currentScreen = createOrSignUi;
 
-        if(currentScreen = startUi)
+        if(currentScreen == createOrSignUi)
+        {
+            AudioManager.Instance.CreateAccountTheme();
+        }
+
+        if(currentScreen == startUi)
         {
             AudioManager.Instance.PlayTheme();
         }
@@ -52,8 +64,14 @@ public class UiManager : MonoBehaviour
     {
         switch (button.name)
         {
+            case "Create":
+                ChangeScreen(currentScreen, createAccountUi);
+                break;
+            case "Sign":
+                ChangeScreen(currentScreen, signUpUi);
+                break;
             case "TouchToPlay":
-                ChangeScreen(currentScreen, gameUi);
+                DOTween.To(() => validateSlide, x => validateSlide = x, -110, easeTimeSeconds).SetEase(Ease.OutBounce).OnComplete(() => { ChangeScreen(currentScreen, gameUi); });
                 break;
             case "Settings":
                 ChangeScreen(currentScreen, settingsUi);
@@ -101,6 +119,11 @@ public class UiManager : MonoBehaviour
     {
         // Determine which screen is currently active and switch to startUi
         ChangeScreen(currentScreen, startUi);
+    }
+
+    public void ReturnToAccountMenu()
+    {
+        ChangeScreen(currentScreen, createOrSignUi);
     }
 
 
