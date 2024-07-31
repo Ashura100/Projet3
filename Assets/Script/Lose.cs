@@ -3,33 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Lose : MonoBehaviour
+namespace Hangman
 {
-    [SerializeField]
-    GameManager gameManager;
-    [SerializeField]
-    UIDocument uIDocument;
-    VisualElement root;
-
-    Button returnButton;
-
-    void Awake()
+    public class Lose : MonoBehaviour
     {
-        root = uIDocument.rootVisualElement;
+        [SerializeField]
+        GameManager gameManager;
+        [SerializeField]
+        UIDocument uIDocument;
+        VisualElement root;
 
-        returnButton = root.Q<Button>("Return");
+        Button returnButton;
 
-        returnButton.clickable.clicked += ReturnToMenu;
-    }
+        void Awake()
+        {
+            root = uIDocument.rootVisualElement;
 
-    private void Start()
-    {
-        AudioManager.Instance.PlayGameOverSound();
-    }
+            returnButton = root.Q<Button>("Return");
 
-    private void ReturnToMenu()
-    {
-        AudioManager.Instance.PlayClickSound();
-        gameManager.Restart();
+            returnButton.clickable.clicked += ReturnToMenu;
+        }
+
+        //joue le son de défaite
+        private void Start()
+        {
+            AudioManager.Instance.PlayGameOverSound();
+        }
+
+        //retour menu
+        private void ReturnToMenu()
+        {
+            AudioManager.Instance.PlayClickSound();
+            gameManager.Restart();
+        }
     }
 }

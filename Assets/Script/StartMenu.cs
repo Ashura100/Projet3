@@ -5,40 +5,44 @@ using UnityEngine;
 using UnityEngine.Device;
 using UnityEngine.UIElements;
 
-public class StartMenu : MonoBehaviour
+namespace Hangman
 {
-    [SerializeField]
-    GameManager gameManager;
-    [SerializeField]
-    UIDocument uIDocument;
-
-    VisualElement root;
-    VisualElement startMenu;
-    Button screen;
-    Button settings;
-    Button category;
-    Button classement;
-
-    void OnEnable()
+    public class StartMenu : MonoBehaviour
     {
-        root = uIDocument.rootVisualElement;
+        [SerializeField]
+        GameManager gameManager;
+        [SerializeField]
+        UIDocument uIDocument;
 
-        startMenu = root.Q<VisualElement>("StartMenu");
-        screen = root.Q<Button>("TouchToPlay");
-        settings = root.Q<Button>("Settings");
-        category = root.Q<Button>("Category");
-        classement = root.Q<Button>("Classement");
+        VisualElement root;
+        VisualElement startMenu;
+        Button screen;
+        Button settings;
+        Button category;
+        Button classement;
 
-        List<Button> buttons = new List<Button> { screen, settings, category, classement };
-        foreach (var button in buttons)
+        void OnEnable()
         {
-            button.clickable.clicked += () => OnButtonTouch(button);
-        }
-    }
+            root = uIDocument.rootVisualElement;
 
-    private void OnButtonTouch(Button button)
-    {
-        AudioManager.Instance.PlayGameClickSound();
-        UiManager.Instance.OnButtonTouch(button);
+            startMenu = root.Q<VisualElement>("StartMenu");
+            screen = root.Q<Button>("TouchToPlay");
+            settings = root.Q<Button>("Settings");
+            category = root.Q<Button>("Category");
+            classement = root.Q<Button>("Classement");
+
+            List<Button> buttons = new List<Button> { screen, settings, category, classement };
+            foreach (var button in buttons)
+            {
+                button.clickable.clicked += () => OnButtonTouch(button);
+            }
+        }
+
+        //permet de changé les UI en fonction du bouton cliqué 
+        private void OnButtonTouch(Button button)
+        {
+            AudioManager.Instance.PlayGameClickSound();
+            UiManager.Instance.OnButtonTouch(button);
+        }
     }
 }

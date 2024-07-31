@@ -3,62 +3,68 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+namespace Hangman
 {
-    // Instance statique du GameManager
-    public static GameManager Instance;
-
-    // Autres membres de la classe GameManager
-    [SerializeField]
-    public Test currentGame;
-    public string currentCategory = "10"; // Devient privée
-    public int score;
-    public int gameWon;
-    public bool isPaused;
-
-    // Propriété publique pour accéder à currentCategory
-    public string CurrentCategory
+    public class GameManager : MonoBehaviour
     {
-        get { return currentCategory; }
-        set { currentCategory = value; }
-    }
+        // Instance statique du GameManager
+        public static GameManager Instance;
 
-    private void Awake()
-    {
-        if (Instance == null)
+        // Autres membres de la classe GameManager
+        [SerializeField]
+        public Pendu currentGame;
+        public string currentCategory = "10"; // Devient privée
+        public int score;
+        public int gameWon;
+        public bool isPaused;
+
+        // Propriété publique pour accéder à currentCategory
+        public string CurrentCategory
         {
-            // Recherche de l'instance existante dans la scène
-            Instance = this;
+            get { return currentCategory; }
+            set { currentCategory = value; }
         }
-        DontDestroyOnLoad(Instance);
-    }
-    void Start()
-    {
-        gameWon = 0;
-    }
-    public void Restart()
-    {
-        SceneManager.LoadScene(0);
-    }
 
-    public void Paused()
-    {
-        isPaused = true;
-        UiManager.Instance.PauseMenu();
-        Debug.Log("Pause");
-    }
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                // Recherche de l'instance existante dans la scène
+                Instance = this;
+            }
+            DontDestroyOnLoad(Instance);
+        }
+        void Start()
+        {
+            gameWon = 0;
+        }
+
+        //recharge l'application
+        public void Restart()
+        {
+            SceneManager.LoadScene(0);
+        }
+
+        //met sur pause en faisait apparaitre l'UI pause
+        public void Paused()
+        {
+            isPaused = true;
+            UiManager.Instance.PauseMenu();
+            Debug.Log("Pause");
+        }
 #if UNITY_EDITOR
-    public void Exit()
-    {
-        if (Application.isEditor)
+        public void Exit()
         {
-            UnityEditor.EditorApplication.isPlaying = false;
+            if (Application.isEditor)
+            {
+                UnityEditor.EditorApplication.isPlaying = false;
 
+            }
+            else
+            {
+                Application.Quit();
+            }
         }
-        else
-        {
-            Application.Quit();
-        }
-    }
 #endif
+    }
 }

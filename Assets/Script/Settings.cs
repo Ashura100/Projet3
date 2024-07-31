@@ -6,131 +6,141 @@ using UnityEngine.Audio;
 using UnityEngine.Device;
 using UnityEngine.UIElements;
 
-public class Settings : MonoBehaviour
+namespace Hangman   
 {
-    public static Settings Instance;
-    public enum Difficulty
+    public class Settings : MonoBehaviour
     {
-        Easy,
-        Medium,
-        Hard
-    }
+        public static Settings Instance;
+        public enum Difficulty
+        {
+            Easy,
+            Medium,
+            Hard
+        }
 
-    [SerializeField]
-    AudioManager audioManager;
-    [SerializeField]
-    GameManager gameManager;
-    [SerializeField]
-    UIDocument uIDocument;
-    VisualElement root;
+        [SerializeField]
+        AudioManager audioManager;
+        [SerializeField]
+        GameManager gameManager;
+        [SerializeField]
+        UIDocument uIDocument;
+        VisualElement root;
 
-    Button goBack;
-    Slider slider;
-    Slider sfxSlider;
-    Toggle toggle;
+        Button goBack;
+        Slider slider;
+        Slider sfxSlider;
+        Toggle toggle;
 
-    private List<Button> resolutionButtons;
-    private List<(int width, int height)> resolutions = new List<(int, int)>
-    {
+        private List<Button> resolutionButtons;
+        private List<(int width, int height)> resolutions = new List<(int, int)>
+        {
         (1280, 720),
         (1920, 1080),
         (2048, 1556)
-    };
+        };
 
-    private List<Button> difficultyButtons;
-    private List<Difficulty> difficulties = new List<Difficulty>
-    {
+        private List<Button> difficultyButtons;
+        private List<Difficulty> difficulties = new List<Difficulty>
+        {
         Difficulty.Easy,
         Difficulty.Medium,
         Difficulty.Hard
-    };
+        };
 
-    public AudioMixer audioMixer;
-    public AudioMixer sfxAudioMixer;
+        public AudioMixer audioMixer;
+        public AudioMixer sfxAudioMixer;
 
-    public static Difficulty currentDifficulty = Difficulty.Medium;
+        public static Difficulty currentDifficulty = Difficulty.Medium;
 
-    void Awake()
-    {
-        if (Instance != null)
-            Destroy(gameObject);
-        else
-            Instance = this;
-
-        DontDestroyOnLoad(gameObject);
-    }
-
-    private void OnEnable()
-    {
-        root = GetComponent<UIDocument>().rootVisualElement;
-        slider = root.Q<Slider>("Slider");
-        sfxSlider = root.Q<Slider>("Sfx");
-        toggle = root.Q<Toggle>("FullScreenT");
-        goBack = root.Q<Button>("Return");
-
-        resolutionButtons = root.Query<Button>("ButtonRes").ToList();
-        for (int i = 0; i < resolutionButtons.Count; i++)
+        void Awake()
         {
-            int index = i;
-            resolutionButtons[i].clicked += () => SetQuality(resolutions[index].width, resolutions[index].height);
+            if (Instance != null)
+                Destroy(gameObject);
+            else
+                Instance = this;
+
+            DontDestroyOnLoad(gameObject);
         }
 
-        difficultyButtons = root.Query<Button>("ButtonDiff").ToList();
-        for (int i = 0; i < difficultyButtons.Count; i++)
+        private void OnEnable()
         {
-            int index = i;
-            difficultyButtons[i].clicked += () => SetDifficulty(difficulties[index]);
+            root = GetComponent<UIDocument>().rootVisualElement;
+            slider = root.Q<Slider>("Slider");
+            sfxSlider = root.Q<Slider>("Sfx");
+            toggle = root.Q<Toggle>("FullScreenT");
+            goBack = root.Q<Button>("Return");
+
+            resolutionButtons = root.Query<Button>("ButtonRes").ToList();
+            for (int i = 0; i < resolutionButtons.Count; i++)
+            {
+                int index = i;
+                resolutionButtons[i].clicked += () => SetQuality(resolutions[index].width, resolutions[index].height);
+            }
+
+            difficultyButtons = root.Query<Button>("ButtonDiff").ToList();
+            for (int i = 0; i < difficultyButtons.Count; i++)
+            {
+                int index = i;
+                difficultyButtons[i].clicked += () => SetDifficulty(difficulties[index]);
+            }
+
+            goBack.clickable.clicked += GoBack;
+
+            slider.RegisterValueChangedCallback(evt => SetVolume(evt.newValue));
+
+            sfxSlider.RegisterValueChangedCallback(evt => SetSfxVolume(evt.newValue));
+
+            toggle.RegisterValueChangedCallback(evt => SetFullScreen(evt.newValue));
+
+            toggle.value = UnityEngine.Screen.fullScreen;
         }
 
-        goBack.clickable.clicked += GoBack;
+        //change la difficulté (n'est pas encore en place)
+        void OnChangeDifficulty(EventBase eventBase)
+        {
+            Button button = (Button)eventBase.target;
+            SetDifficulty(0);
+        }
 
-        slider.RegisterValueChangedCallback(evt => SetVolume(evt.newValue));
+        //change le volume des musiques
+        public void SetVolume(float volume)
+        {
+            float dB = Mathf.Log10(volume) * 20;
+            audioMixer.SetFloat("Volume", dB);
+        }
 
-        sfxSlider.RegisterValueChangedCallback(evt => SetSfxVolume(evt.newValue));
+        //change le volume des sfx
+        public void SetSfxVolume(float volume)
+        {
+            float dB = Mathf.Log10(volume) * 20;
+            sfxAudioMixer.SetFloat("Volume", dB);
+        }
 
-        toggle.RegisterValueChangedCallback(evt => SetFullScreen(evt.newValue));
+        //change la qualité de l'iamge
+        public void SetQuality(int width, int height)
+        {
+            UnityEngine.Screen.SetResolution(width, height, FullScreenMode.FullScreenWindow);
+            Debug.Log($"Resolution changed to: {width}x{height}");
+        }
 
-        toggle.value = UnityEngine.Screen.fullScreen;
+        //met l'écran sans fenêtre seulement pour la version pc
+        public void SetFullScreen(bool isFullScreen)
+        {
+            UnityEngine.Screen.fullScreen = isFullScreen;
+            Debug.Log($"Fullscreen mode set to {isFullScreen}");
+        }
+
+        public void SetDifficulty(Difficulty newDifficulty)
+        {
+            currentDifficulty = newDifficulty;
+            Debug.Log($"Difficulty changed to: {newDifficulty}");
+        }
+
+        //retour menu
+        void GoBack()
+        {
+            UiManager.Instance.GoBackToMenu();
+        }
     }
 
-    void OnChangeDifficulty(EventBase eventBase)
-    {
-        Button button = (Button)eventBase.target;
-        SetDifficulty(0);
-    }
-
-    public void SetVolume(float volume)
-    {
-        float dB = Mathf.Log10(volume) * 20;
-        audioMixer.SetFloat("Volume", dB);
-    }
-
-    public void SetSfxVolume(float volume)
-    {
-        float dB = Mathf.Log10(volume) * 20;
-        sfxAudioMixer.SetFloat("Volume", dB);
-    }
-
-    public void SetQuality(int width, int height)
-    {
-        UnityEngine.Screen.SetResolution(width, height, FullScreenMode.FullScreenWindow);
-        Debug.Log($"Resolution changed to: {width}x{height}");
-    }
-
-    public void SetFullScreen(bool isFullScreen)
-    {
-        UnityEngine.Screen.fullScreen = isFullScreen;
-        Debug.Log($"Fullscreen mode set to {isFullScreen}");
-    }
-
-    public void SetDifficulty(Difficulty newDifficulty)
-    {
-        currentDifficulty = newDifficulty;
-        Debug.Log($"Difficulty changed to: {newDifficulty}");
-    }
-
-    void GoBack()
-    {
-        UiManager.Instance.GoBackToMenu();
-    }
 }

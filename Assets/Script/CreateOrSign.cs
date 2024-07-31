@@ -4,30 +4,34 @@ using UnityEngine;
 using UnityEngine.Device;
 using UnityEngine.UIElements;
 
-public class CreateOrSign : MonoBehaviour
+namespace Hangman
 {
-    [SerializeField]
-    UIDocument uIDocument;
-    VisualElement root;
-    Button create;
-    Button sign;
-
-    private void OnEnable()
+    public class CreateOrSign : MonoBehaviour
     {
-        root = GetComponent<UIDocument>().rootVisualElement;
-        create = root.Q<Button>("Create");
-        sign = root.Q<Button>("Sign");
+        [SerializeField]
+        UIDocument uIDocument;
+        VisualElement root;
+        Button create;
+        Button sign;
 
-        List<Button> buttons = new List<Button> { create, sign };
-        foreach (var button in buttons)
+        private void OnEnable()
         {
-            button.clickable.clicked += () => OnButtonTouch(button);
-        }
-    }
+            root = GetComponent<UIDocument>().rootVisualElement;
+            create = root.Q<Button>("Create");
+            sign = root.Q<Button>("Sign");
 
-    private void OnButtonTouch(Button button)
-    {
-        AudioManager.Instance.PlayGameClickSound();
-        UiManager.Instance.OnButtonTouch(button);
+            List<Button> buttons = new List<Button> { create, sign };
+            foreach (var button in buttons)
+            {
+                button.clickable.clicked += () => OnButtonTouch(button);
+            }
+        }
+
+        //permet de choisir en se connecter ou créer un compte en changeant les UIs
+        private void OnButtonTouch(Button button)
+        {
+            AudioManager.Instance.PlayGameClickSound();
+            UiManager.Instance.OnButtonTouch(button);
+        }
     }
 }
