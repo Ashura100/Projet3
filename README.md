@@ -11,3 +11,4 @@
 ![HangmanUI3](https://github.com/user-attachments/assets/d2cfddc9-eadd-4a3d-995c-114114bfa379)
 ![HangmanUI2](https://github.com/user-attachments/assets/32fdad9d-4073-461d-a20c-9777cda55ef1)
 ![HangmanUI](https://github.com/user-attachments/assets/90a012f9-9765-452d-ba4d-14ae4585a4fa)
+![Trello 2024-08-02 115504](https://github.com/user-attachments/assets/95c778bd-5ebf-40c8-a80a-d1f74f795dfc)
