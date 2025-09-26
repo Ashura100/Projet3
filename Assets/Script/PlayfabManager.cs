@@ -39,7 +39,7 @@ namespace Hangman
             );
         }
 
-        //fait appel à l'api client pour connécter un client déjà enregistrer
+        //fait appel à l'api client pour connécter un client déjà enregistre
         public void SignIn(string userName, string passWord)
         {
             PlayFabClientAPI.LoginWithPlayFab(new LoginWithPlayFabRequest()

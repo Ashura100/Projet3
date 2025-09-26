@@ -839,7 +839,7 @@ GameObject:
   - component: {fileID: 1735370351}
   - component: {fileID: 1735370353}
   m_Layer: 5
-  m_Name: SignUp
+  m_Name: SignIn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
