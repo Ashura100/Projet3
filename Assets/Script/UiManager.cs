@@ -1,8 +1,4 @@
-using DG.Tweening;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,139 +6,279 @@ namespace Hangman
 {
     public class UiManager : MonoBehaviour
     {
-        public static UiManager Instance;
+        [SerializeField] Category category;
 
-        [SerializeField] public GameManager gameManager;
+        /*[SerializeField] UIDocument createOrSignUi;
+        [SerializeField] UIDocument createAccountUi;
+        [SerializeField] UIDocument signUpUi;*/
+        [SerializeField] UIDocument startUi;
+        [SerializeField] UIDocument gameUi;
+        [SerializeField] UIDocument settingsUi;
+        [SerializeField] UIDocument categoryUi;
+        [SerializeField] UIDocument classUi;
+        [SerializeField] UIDocument winUi;
+        [SerializeField] UIDocument loseUi;
+        [SerializeField] UIDocument pauseUi;
 
-        [SerializeField] public GameObject createOrSignUi;
-        [SerializeField] public GameObject createAccountUi;
-        [SerializeField] public GameObject signUpUi;
-        [SerializeField] public GameObject startUi;
-        [SerializeField] public GameObject gameUi;
-        [SerializeField] public GameObject settingsUi;
-        [SerializeField] public GameObject categoryUi;
-        [SerializeField] public GameObject classUi;
-        [SerializeField] public GameObject winUi;
-        [SerializeField] public GameObject loseUi;
-        [SerializeField] public GameObject pauseUi;
+        public VisualElement createOrSignUiRoot { get; private set; }
+        public VisualElement createAccountUiRoot { get; private set; }
+        public VisualElement signUpUiRoot { get; private set; }
+        public VisualElement startUiRoot { get; private set; }
+        public VisualElement gameUiRoot { get; private set; }
+        public VisualElement settingsUiRoot { get; private set; }
+        public VisualElement categoryUiRoot { get; private set; }
+        public VisualElement classUiRoot { get; private set; }
+        public VisualElement winUiRoot { get; private set; }
+        public VisualElement loseUiRoot { get; private set; }
+        public VisualElement pauseUiRoot { get; private set; }
 
-        public GameObject currentScreen;
+        VisualElement hangmanImage;
 
-        private float validateSlide;
-        private float easeTimeSeconds = 1.2f;
+        Label wordLabel, wrongLettersLabel;
+
+        TextField username, emailAdress, password;
+
+        Button createAccountButton, signUpButton;
+
+        Slider musicSlider, sfxSlider;
+        Toggle fullscreenToggle;
 
         private void Awake()
         {
-            if (Instance == null)
-            {
-                // Recherche de l'instance existante dans la scène
-                Instance = this;
-            }
+            startUiRoot = startUi.rootVisualElement;
+            /*createAccountUiRoot = createAccountUi.rootVisualElement;
+            createOrSignUiRoot = createOrSignUi.rootVisualElement;
+            signUpUiRoot = signUpUi.rootVisualElement;*/
+            gameUiRoot = gameUi.rootVisualElement;
+            settingsUiRoot = settingsUi.rootVisualElement;
+            categoryUiRoot = categoryUi.rootVisualElement;
+            classUiRoot = classUi.rootVisualElement;
+            winUiRoot = winUi.rootVisualElement;
+            loseUiRoot = loseUi.rootVisualElement;
+            pauseUiRoot = pauseUi.rootVisualElement;
         }
         // Start is called before the first frame update
         void Start()
         {
-            currentScreen = createOrSignUi;//écran visible en premier
-
-            if (currentScreen == createOrSignUi)
-            {
-                AudioManager.Instance.CreateAccountTheme();//joue le thème de l'écran de création de compte
-            }
-
-            if (currentScreen == startUi)
-            {
-                AudioManager.Instance.PlayTheme();//joue le thème principal
-            }
-
-            if (GameManager.Instance.gameWon > 0)
-            {
-                ChangeScreen(currentScreen, gameUi, 0); //0 pour une transition instantannée
-                AudioManager.Instance.PlayGameTheme();//joue le theme de jeu
-            }
-
+            SetupButtons();
         }
 
-        //switch les différent UI en fonction de l'UI actif
-        public void OnButtonTouch(Button button)
+        public void SetupButtons()
         {
-            switch (button.name)
+            startUiRoot.Q<Button>("TouchToPlay").clicked += () =>
             {
-                case "Create":
-                    ChangeScreen(currentScreen, createAccountUi);
-                    break;
-                case "Sign":
-                    ChangeScreen(currentScreen, signUpUi);
-                    break;
-                case "TouchToPlay":
-                    DOTween.To(() => validateSlide, x => validateSlide = x, -110, easeTimeSeconds).SetEase(Ease.OutBounce).OnComplete(() => { ChangeScreen(currentScreen, gameUi); });
-                    break;
-                case "Settings":
-                    ChangeScreen(currentScreen, settingsUi);
-                    break;
-                case "Category":
-                    ChangeScreen(currentScreen, categoryUi);
-                    break;
-                case "Classement":
-                    ChangeScreen(currentScreen, classUi);
-                    break;
+                AudioManager.Instance.PlayClickSound();
+                GameManager.Instance.SwitchScreen(ScreenType.GameUI);
+                Pendu.Instance.ResetGame();
+            };
+
+            startUiRoot.Q<Button>("Category").clicked += () =>
+            {
+                AudioManager.Instance.PlayClickSound();
+                GameManager.Instance.SwitchScreen(ScreenType.CategoryUI);
+            };
+
+            startUiRoot.Q<Button>("Settings").clicked += () =>
+            {
+                AudioManager.Instance.PlayClickSound();
+                GameManager.Instance.SwitchScreen(ScreenType.SettingsUI);
+            };
+
+            startUiRoot.Q<Button>("Classement").clicked += () =>
+            {
+                AudioManager.Instance.PlayClickSound();
+                GameManager.Instance.SwitchScreen(ScreenType.GameUI);
+            };
+
+            // ---------- BOUTON RETOUR ----------
+            gameUiRoot.Q<Button>("Return").clicked += () =>
+            {
+                AudioManager.Instance.PlayClickSound();
+                GameManager.Instance.SwitchScreen(ScreenType.StartUI);
+            };
+
+            // ---------- BOUTON PAUSE ----------
+            gameUiRoot.Q<Button>("PauseButton").clicked += () =>
+            {
+                AudioManager.Instance.PlayClickSound();
+                GameManager.Instance.Paused();
+                GameManager.Instance.SwitchScreen(ScreenType.PauseUI);
+            };
+
+            // ---------- BOUTONS BONUS ----------
+            gameUiRoot.Q<Button>("CancelLetter").clicked += () =>
+            {
+                AudioManager.Instance.PlayClickSound();
+                Pendu.Instance.RemoveWrongLetter();
+            };
+
+            gameUiRoot.Q<Button>("AddLetter").clicked += () =>
+            {
+                AudioManager.Instance.PlayClickSound();
+                Pendu.Instance.ShowCorrectLetter();
+            };
+
+            // ---------- BOUTONS ALPHABET ----------
+            var alphaButtons = gameUiRoot.Query<Button>("AlphaButton");
+            foreach (var button in alphaButtons.ToList())
+            {
+                string letter = button.text;
+                button.clicked += () =>
+                {
+                    AudioManager.Instance.PlayClickSound();
+                    Pendu.Instance.OnLetterTouch(letter);
+                };
             }
+
+            // Bouton retour
+            categoryUiRoot.Q<Button>("Return").clicked += () =>
+            {
+                AudioManager.Instance.PlayClickSound();
+                GameManager.Instance.SwitchScreen(ScreenType.StartUI);
+            };
+
+            // Boutons de catégories
+            categoryUiRoot.Q<Button>("CorpsButton").clicked += () => category.SelectCategory("6");
+            categoryUiRoot.Q<Button>("ArtButton").clicked += () => category.SelectCategory("10");
+            categoryUiRoot.Q<Button>("AnimalButton").clicked += () => category.SelectCategory("19");
+            categoryUiRoot.Q<Button>("ArmyButton").clicked += () => category.SelectCategory("26");
+
+            settingsUiRoot.Q<Button>("Return").clicked += () =>
+            {
+                AudioManager.Instance.PlayClickSound();
+                GameManager.Instance.SwitchScreen(ScreenType.StartUI);
+            };
+
+            /*createAccountUiRoot.Q<Button>("Return").clicked += () => GameManager.Instance.SwitchScreen(ScreenType.CreateOrSignUI) ;
+
+            createOrSignUiRoot.Q<Button>("Create").clicked += () =>
+            {
+                AudioManager.Instance.PlayGameClickSound();
+                GameManager.Instance.SwitchScreen(ScreenType.CreateAccountUI);
+            };
+
+            createOrSignUiRoot.Q<Button>("Sign").clicked += () =>
+            {
+                AudioManager.Instance.PlayGameClickSound();
+                GameManager.Instance.SwitchScreen(ScreenType.SignUpUI);
+            };*/
+
+            winUiRoot.Q<Button>("Continue").clicked += () =>
+            {
+                AudioManager.Instance.PlayClickSound();
+                GameManager.Instance.SwitchScreen(ScreenType.GameUI);
+                Pendu.Instance.ResetGame();
+            };
+
+            loseUiRoot.Q<Button>("Return").clicked += () =>
+            {
+                AudioManager.Instance.PlayClickSound();
+                GameManager.Instance.SwitchScreen(ScreenType.StartUI);
+            };
+        }
+
+        public void UpdateWord(string content)
+        {
+            wordLabel = gameUiRoot.Q<Label>("Word");
+
+            if (wordLabel != null)
+                wordLabel.text = content;
+        }
+
+        public void UpdateWrongLetters(string content)
+        {
+            wrongLettersLabel = gameUiRoot.Q<Label>("WrongLetters");
+
+            if (wrongLettersLabel != null)
+                wrongLettersLabel.text = "Fautes : " + content;
+        }
+
+        public void UpdateHangmanImage(int errors)
+        {
+            hangmanImage = gameUiRoot.Q<VisualElement>("GameContainer");
+
+            hangmanImage.style.backgroundImage =
+                new StyleBackground(Pendu.Instance.GetHangmanSprite(errors));
+        }
+
+        public void SetupSettingsUI(Settings settings)
+        {
+            musicSlider = settingsUiRoot.Q<Slider>("Slider");
+            sfxSlider = settingsUiRoot.Q<Slider>("Sfx");
+            fullscreenToggle = settingsUiRoot.Q<Toggle>("FullScreenT");
+
+            // Résolutions
+            var resolutionButtons = settingsUiRoot.Query<Button>("ButtonRes").ToList();
+            for (int i = 0; i < resolutionButtons.Count; i++)
+            {
+                int index = i;
+                resolutionButtons[i].clicked += () =>
+                    settings.SetResolution(settings.resolutions[index].width, settings.resolutions[index].height);
+            }
+
+            // Difficultés
+            var difficultyButtons = settingsUiRoot.Query<Button>("ButtonDiff").ToList();
+            for (int i = 0; i < difficultyButtons.Count; i++)
+            {
+                int index = i;
+                difficultyButtons[i].clicked += () => settings.SetDifficulty(settings.difficulties[index]);
+            }
+
+            // Sliders et toggle
+            musicSlider.RegisterValueChangedCallback(evt => settings.SetVolume(evt.newValue));
+            sfxSlider.RegisterValueChangedCallback(evt => settings.SetSfxVolume(evt.newValue));
+            fullscreenToggle.RegisterValueChangedCallback(evt => settings.SetFullScreen(evt.newValue));
+
+            fullscreenToggle.value = Screen.fullScreen;
+        }
+
+        public void SetupCreateAccountUI()
+        {
+            username = createAccountUiRoot.Q<TextField>("UserText");
+            emailAdress = createAccountUiRoot.Q<TextField>("MailText");
+            password = createAccountUiRoot.Q<TextField>("PassText");
+            createAccountButton = createAccountUiRoot.Q<Button>("CreateAccount");
+
+            createAccountButton.clicked += OnCreateAccountClicked;
+        }
+
+        public void SetupSignUpUI()
+        {
+            username = signUpUiRoot.Q<TextField>("UserText");
+            password = signUpUiRoot.Q<TextField>("PassText");
+            signUpButton = signUpUiRoot.Q<Button>("SignUp");
+
+            signUpButton.clicked += OnSignUpClicked;
+        }
+
+        private void OnCreateAccountClicked()
+        {
             AudioManager.Instance.PlayGameClickSound();
+            PlayfabManager.Instance.CreateAccount(
+                username.text,
+                emailAdress.text,
+                password.text
+            );
         }
 
-        //animation de changement d'écran/UI (3ème arguments optionnel est egale à 0.5f par défauts )
-        public void ChangeScreen(GameObject fromScreen, GameObject toScreen, float speed = 0.5f)
+        private void OnSignUpClicked()
         {
-
-            fromScreen.transform.DOMoveX(-Screen.width, speed).OnComplete(() => {
-                fromScreen.SetActive(false);
-                toScreen.SetActive(true);
-                toScreen.transform.position = new Vector3(Screen.width, toScreen.transform.position.y, toScreen.transform.position.z);
-                toScreen.transform.DOMoveX(0, speed);
-                currentScreen = toScreen;
-
-                AudioManager.Instance.StopCurrentSound();
-                if (currentScreen == startUi)
-                {
-                    AudioManager.Instance.PlayTheme();
-                }
-                else if (currentScreen == gameUi)
-                {
-                    AudioManager.Instance.PlayGameTheme();
-                }
-            });
-
+            AudioManager.Instance.PlayGameClickSound();
+            PlayfabManager.Instance.SignIn(username.text, password.text);
         }
 
-        //fonction UI menu pause
-        public void PauseMenu()
+        // --- Fonctions utiles pour mettre à jour les champs ---
+        public void UpdateCreateAccountFields(string _username, string _email, string _password)
         {
-            ChangeScreen(currentScreen, pauseUi);
+            username.value = _username;
+            emailAdress.value = _email;
+            password.value = _password;
         }
 
-        //fonction UI retour menu
-        public void GoBackToMenu()
+        public void UpdateSignUpFields(string _username, string _password)
         {
-            // Determine which screen is currently active and switch to startUi
-            ChangeScreen(currentScreen, startUi);
-        }
-
-        //fonction UI retour compte menu
-        public void ReturnToAccountMenu()
-        {
-            ChangeScreen(currentScreen, createOrSignUi);
-        }
-
-        //fonction UI victoire
-        public void OnWin()
-        {
-            ChangeScreen(currentScreen, winUi);
-        }
-
-        //fonction UI défaite
-        public void OnLose()
-        {
-            ChangeScreen(currentScreen, loseUi);
+            username.value = _username;
+            password.value = _password;
         }
     }
-
 }

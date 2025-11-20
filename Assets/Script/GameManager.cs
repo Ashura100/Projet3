@@ -1,14 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 namespace Hangman
 {
+    public enum ScreenType
+    {
+        /*CreateOrSignUI, CreateAccountUI, SignUpUI,*/ StartUI, GameUI, SettingsUI, CategoryUI, ClassUI, WinUI, LoseUI, PauseUI
+    }
     public class GameManager : MonoBehaviour
     {
         // Instance statique du GameManager
         public static GameManager Instance;
+
+        [SerializeField] public UiManager uiManager;
 
         // Autres membres de la classe GameManager
         [SerializeField]
@@ -37,6 +42,69 @@ namespace Hangman
         void Start()
         {
             gameWon = 0;
+            SwitchScreen(ScreenType.StartUI);
+            uiManager.SetupButtons();
+        }
+
+        public void SwitchScreen(ScreenType screenType)
+        {
+            HideAllScreens();
+
+            // Affiche l'écran correspondant
+            switch (screenType)
+            {
+                case ScreenType.StartUI:
+                    uiManager.startUiRoot.style.display = DisplayStyle.Flex;
+                    break;
+                /*case ScreenType.CreateAccountUI:
+                    uiManager.createAccountUiRoot.style.display = DisplayStyle.Flex;
+                    break;
+                case ScreenType.CreateOrSignUI:
+                    uiManager.createOrSignUiRoot.style.display = DisplayStyle.Flex;
+                    break;
+                case ScreenType.SignUpUI:
+                    uiManager.signUpUiRoot.style.display = DisplayStyle.Flex;
+                    break;*/
+                case ScreenType.GameUI:
+                    uiManager.gameUiRoot.style.display = DisplayStyle.Flex;
+                    break;
+                case ScreenType.SettingsUI:
+                    uiManager.settingsUiRoot.style.display = DisplayStyle.Flex;
+                    break;
+                case ScreenType.CategoryUI:
+                    uiManager.categoryUiRoot.style.display = DisplayStyle.Flex;
+                    break;
+                case ScreenType.ClassUI:
+                    uiManager.classUiRoot.style.display = DisplayStyle.Flex;
+                    break;
+                case ScreenType.WinUI:
+                    uiManager.winUiRoot.style.display = DisplayStyle.Flex;
+                    break;
+                case ScreenType.LoseUI:
+                    uiManager.loseUiRoot.style.display = DisplayStyle.Flex;
+                    break;
+                case ScreenType.PauseUI:
+                    uiManager.pauseUiRoot.style.display = DisplayStyle.Flex;
+                    break;
+                default:
+                    Debug.LogWarning("Unknown screen type: " + screenType);
+                    break;
+            }
+        }
+
+        private void HideAllScreens()
+        {
+            uiManager.startUiRoot.style.display = DisplayStyle.None;
+            /* uiManager.createAccountUiRoot.style.display = DisplayStyle.None;
+            uiManager.createOrSignUiRoot.style.display = DisplayStyle.None;
+            uiManager.signUpUiRoot.style.display = DisplayStyle.None;*/
+            uiManager.gameUiRoot.style.display = DisplayStyle.None;
+            uiManager.settingsUiRoot.style.display = DisplayStyle.None;
+            uiManager.categoryUiRoot.style.display = DisplayStyle.None;
+            uiManager.classUiRoot.style.display = DisplayStyle.None;
+            uiManager.winUiRoot.style.display = DisplayStyle.None;
+            uiManager.loseUiRoot.style.display = DisplayStyle.None;
+            uiManager.pauseUiRoot.style.display = DisplayStyle.None;
         }
 
         //recharge l'application
@@ -49,9 +117,9 @@ namespace Hangman
         public void Paused()
         {
             isPaused = true;
-            UiManager.Instance.PauseMenu();
             Debug.Log("Pause");
         }
+
 #if UNITY_EDITOR
         public void Exit()
         {

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
@@ -15,48 +13,43 @@ namespace Hangman
             Instance = this;
         }
 
-        //fait appel à l'api client pour enregistrer les donnée utilisateur 
-        public void CreateAccount(string userName, string adressName, string passWord)
+        public void CreateAccount(string username, string email, string password)
         {
-            PlayFabClientAPI.RegisterPlayFabUser(
-                new RegisterPlayFabUserRequest()
-                {
-                    Email = adressName,
-                    Password = passWord,
-                    Username = userName,
-                    RequireBothUsernameAndEmail = true
-                },
-                response =>
-                {
-                    Debug.Log($"Successful Account Creation: {userName}, {adressName}");
-                    SignIn(userName, passWord);
-                    UiManager.Instance.ChangeScreen(UiManager.Instance.currentScreen, UiManager.Instance.signUpUi);
-                },
-                error =>
-                {
-                    Debug.Log($"Unsuccessful Account Creation: {userName}, {adressName} \n {error.ErrorMessage}");
-                }
-            );
-        }
-
-        //fait appel à l'api client pour connécter un client déjà enregistre
-        public void SignIn(string userName, string passWord)
-        {
-            PlayFabClientAPI.LoginWithPlayFab(new LoginWithPlayFabRequest()
+            PlayFabClientAPI.RegisterPlayFabUser(new RegisterPlayFabUserRequest()
             {
-                Username = userName,
-                Password = passWord
+                Username = username,
+                Email = email,
+                Password = password,
+                RequireBothUsernameAndEmail = true
             },
             response =>
             {
-                Debug.Log($"Successful Account Login: {userName}");
-                UiManager.Instance.ChangeScreen(UiManager.Instance.currentScreen, UiManager.Instance.startUi);
+                Debug.Log($"Compte créé : {username}, {email}");
+                SignIn(username, password);
+                //GameManager.Instance.SwitchScreen(ScreenType.SignUpUI);
             },
             error =>
             {
-                Debug.Log($"Unsuccessful Account Login: {userName}\n {error.ErrorMessage}");
-            }
-            );
+                Debug.LogError($"Échec création compte : {username}, {email}\n{error.ErrorMessage}");
+            });
+        }
+
+        public void SignIn(string username, string password)
+        {
+            PlayFabClientAPI.LoginWithPlayFab(new LoginWithPlayFabRequest()
+            {
+                Username = username,
+                Password = password
+            },
+            response =>
+            {
+                Debug.Log($"Connexion réussie : {username}");
+                GameManager.Instance.SwitchScreen(ScreenType.StartUI);
+            },
+            error =>
+            {
+                Debug.LogError($"Échec connexion : {username}\n{error.ErrorMessage}");
+            });
         }
     }
 }
